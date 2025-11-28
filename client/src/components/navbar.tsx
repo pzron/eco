@@ -55,6 +55,12 @@ export function Navbar() {
               <ShoppingCart className="w-5 h-5" />
             </Link>
           </Button>
+
+          <Button variant="ghost" size="icon" className="hidden md:flex text-white hover:bg-white/10 rounded-full" asChild>
+            <Link href="/profile">
+              <User className="w-5 h-5" />
+            </Link>
+          </Button>
           
           <Button className="hidden md:flex bg-primary hover:bg-primary/90 text-white rounded-full px-6 font-medium shadow-[0_0_15px_rgba(168,85,247,0.5)] transition-all hover:shadow-[0_0_25px_rgba(168,85,247,0.7)]" asChild>
             <Link href="/signup">Sign In</Link>
@@ -71,9 +77,12 @@ export function Navbar() {
               <div className="flex flex-col gap-6 mt-8">
                 <Link href="/"><a className="text-lg font-medium hover:text-primary">Home</a></Link>
                 <Link href="/products"><a className="text-lg font-medium hover:text-primary">Products</a></Link>
-                <Link href="/categories"><a className="text-lg font-medium hover:text-primary">Categories</a></Link>
-                <Button className="bg-primary hover:bg-primary/90 text-white rounded-full w-full mt-4">
-                  Sign In
+                <Link href="/profile"><a className="text-lg font-medium hover:text-primary">Profile</a></Link>
+                <Link href="/admin"><a className="text-lg font-medium hover:text-primary">Admin Dashboard</a></Link>
+                <Link href="/affiliate"><a className="text-lg font-medium hover:text-primary">Affiliate Portal</a></Link>
+                <Link href="/vendor"><a className="text-lg font-medium hover:text-primary">Vendor Portal</a></Link>
+                <Button className="bg-primary hover:bg-primary/90 text-white rounded-full w-full mt-4" asChild>
+                  <Link href="/signup">Sign In</Link>
                 </Button>
               </div>
             </SheetContent>

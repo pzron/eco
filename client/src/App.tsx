@@ -9,6 +9,7 @@ import ProductDetails from "@/pages/product-details";
 import CartPage from "@/pages/cart";
 import CheckoutPage from "@/pages/checkout";
 import SignUpPage from "@/pages/signup";
+import ProfilePage from "@/pages/profile";
 import AdminDashboard from "@/pages/admin/dashboard";
 import AffiliateDashboard from "@/pages/affiliate/dashboard";
 import VendorDashboard from "@/pages/vendor/dashboard";
@@ -23,7 +24,8 @@ function Router() {
       <Route path="/cart" component={CartPage} />
       <Route path="/checkout" component={CheckoutPage} />
       <Route path="/signup" component={SignUpPage} />
-      <Route path="/login" component={SignUpPage} /> {/* Reusing signup for mockup */}
+      <Route path="/login" component={SignUpPage} />
+      <Route path="/profile" component={ProfilePage} />
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/affiliate" component={AffiliateDashboard} />
       <Route path="/vendor" component={VendorDashboard} />

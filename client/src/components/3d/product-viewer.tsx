@@ -1,7 +1,8 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stage, PresentationControls, Float, Environment } from "@react-three/drei";
 import { Suspense } from "react";
-import { Loader } from "lucide-react";
+import { Loader, RotateCw, ZoomIn, Layers, Maximize } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 function Model({ color = "#D3C1E7" }: { color?: string }) {
   // This is a placeholder box that represents the product until we have real GLTF models
@@ -38,8 +39,19 @@ export function ProductViewer({ color }: { color?: string }) {
         <OrbitControls autoRotate autoRotateSpeed={4} enableZoom={false} makeDefault />
       </Canvas>
       
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-muted-foreground/50 uppercase tracking-widest pointer-events-none">
-        Drag to Rotate • Pinch to Zoom
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 p-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10">
+        <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full hover:bg-white/10 text-white" title="Rotate Left">
+          <RotateCw className="w-4 h-4" />
+        </Button>
+        <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full hover:bg-white/10 text-white" title="Zoom In">
+          <ZoomIn className="w-4 h-4" />
+        </Button>
+        <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full hover:bg-white/10 text-white" title="Exploded View">
+          <Layers className="w-4 h-4" />
+        </Button>
+        <Button variant="ghost" size="icon" className="w-8 h-8 rounded-full hover:bg-white/10 text-white" title="Reset View">
+          <Maximize className="w-4 h-4" />
+        </Button>
       </div>
     </div>
   );
