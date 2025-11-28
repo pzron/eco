@@ -35,8 +35,9 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           <Link href="/"><a className="text-sm font-medium hover:text-primary transition-colors">Home</a></Link>
           <Link href="/products"><a className="text-sm font-medium hover:text-primary transition-colors">Products</a></Link>
-          <Link href="/categories"><a className="text-sm font-medium hover:text-primary transition-colors">Categories</a></Link>
-          <Link href="/deals"><a className="text-sm font-medium hover:text-primary transition-colors">Deals</a></Link>
+          <Link href="/admin"><a className="text-sm font-medium hover:text-primary transition-colors">Admin</a></Link>
+          <Link href="/affiliate"><a className="text-sm font-medium hover:text-primary transition-colors">Affiliates</a></Link>
+          <Link href="/vendor"><a className="text-sm font-medium hover:text-primary transition-colors">Vendors</a></Link>
         </div>
 
         {/* Actions */}

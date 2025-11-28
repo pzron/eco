@@ -1,0 +1,133 @@
+import { cn } from "@/lib/utils";
+import { Link, useLocation } from "wouter";
+import { 
+  LayoutDashboard, ShoppingBag, Users, Settings, 
+  BarChart3, Box, Wallet, Bell, Search, Menu 
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+interface DashboardLayoutProps {
+  children: React.ReactNode;
+  role: "admin" | "vendor" | "affiliate";
+}
+
+export function DashboardLayout({ children, role }: DashboardLayoutProps) {
+  const [location] = useLocation();
+
+  const navItems = {
+    admin: [
+      { icon: LayoutDashboard, label: "Command Center", href: "/admin" },
+      { icon: Users, label: "User Management", href: "/admin/users" },
+      { icon: ShoppingBag, label: "Products", href: "/admin/products" },
+      { icon: BarChart3, label: "Analytics", href: "/admin/analytics" },
+      { icon: Settings, label: "System Config", href: "/admin/settings" },
+    ],
+    vendor: [
+      { icon: LayoutDashboard, label: "Dashboard", href: "/vendor" },
+      { icon: Box, label: "My Products", href: "/vendor/products" },
+      { icon: Wallet, label: "Sales & Payouts", href: "/vendor/sales" },
+      { icon: Settings, label: "Store Settings", href: "/vendor/settings" },
+    ],
+    affiliate: [
+      { icon: LayoutDashboard, label: "Workspace", href: "/affiliate" },
+      { icon: BarChart3, label: "Campaigns", href: "/affiliate/campaigns" },
+      { icon: Wallet, label: "Earnings", href: "/affiliate/earnings" },
+      { icon: Settings, label: "Profile", href: "/affiliate/profile" },
+    ]
+  };
+
+  const items = navItems[role];
+
+  return (
+    <div className="min-h-screen bg-[#050505] flex">
+      {/* Sidebar */}
+      <aside className="w-64 border-r border-white/10 bg-black/40 backdrop-blur-xl fixed h-full hidden md:flex flex-col z-20">
+        <div className="p-6 border-b border-white/10">
+          <Link href="/">
+            <div className="flex items-center gap-2 cursor-pointer">
+              <img src="/attached_assets/logo.png" alt="NexCommerce" className="h-8 w-8" />
+              <span className="font-heading font-bold text-lg text-white">
+                Nex<span className="text-primary">Dashboard</span>
+              </span>
+            </div>
+          </Link>
+          <div className="mt-2 px-2 py-1 rounded bg-white/5 text-xs text-muted-foreground uppercase tracking-wider font-medium w-fit">
+            {role.toUpperCase()} PORTAL
+          </div>
+        </div>
+
+        <nav className="flex-1 p-4 space-y-2">
+          {items.map((item) => (
+            <Link key={item.href} href={item.href}>
+              <div className={cn(
+                "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer group",
+                location === item.href 
+                  ? "bg-primary/20 text-primary border border-primary/20" 
+                  : "text-muted-foreground hover:text-white hover:bg-white/5"
+              )}>
+                <item.icon className={cn("w-5 h-5", location === item.href && "animate-pulse")} />
+                <span className="font-medium">{item.label}</span>
+                {location === item.href && (
+                  <div className="ml-auto w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_10px_rgba(168,85,247,0.8)]" />
+                )}
+              </div>
+            </Link>
+          ))}
+        </nav>
+
+        <div className="p-4 border-t border-white/10">
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
+            <Avatar className="h-10 w-10 border border-white/20">
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>AD</AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-medium text-white truncate">Admin User</div>
+              <div className="text-xs text-muted-foreground truncate">admin@nex.com</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1 md:ml-64 flex flex-col min-h-screen relative overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute top-0 left-0 w-full h-96 bg-primary/5 blur-[100px] pointer-events-none" />
+        
+        {/* Header */}
+        <header className="h-16 border-b border-white/10 bg-black/20 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-10">
+          <div className="md:hidden">
+            <Button variant="ghost" size="icon"><Menu className="w-5 h-5" /></Button>
+          </div>
+          
+          <div className="flex-1 max-w-xl mx-4 hidden md:block">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input 
+                type="text" 
+                placeholder="Ask AI Assistant..." 
+                className="w-full bg-white/5 border border-white/10 rounded-full pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-white">
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 animate-ping" />
+              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500" />
+            </Button>
+            <Button size="sm" className="bg-primary/20 text-primary border border-primary/20 hover:bg-primary/30">
+              <Wallet className="mr-2 w-4 h-4" /> Connect Wallet
+            </Button>
+          </div>
+        </header>
+
+        <main className="flex-1 p-6 overflow-y-auto">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
+}
