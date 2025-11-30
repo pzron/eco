@@ -87,8 +87,6 @@ export default function CartPage() {
     },
   };
 
-  const frequentlyBought = products.slice(5, 8);
-  const loyaltyPoints = Math.floor(total);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900 text-foreground selection:bg-primary selection:text-white">
@@ -120,96 +118,86 @@ export default function CartPage() {
             </Link>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             {/* LEFT SIDE - PRODUCTS & ANIMATION */}
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="space-y-6"
+              className="space-y-4 md:space-y-6"
             >
               {/* Products Card */}
-              <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden backdrop-blur-md">
-                <div className="hidden sm:grid grid-cols-5 gap-3 p-5 bg-gradient-to-r from-white/10 to-transparent border-b border-white/10">
+              <div className="bg-white/5 border border-white/10 rounded-2xl md:rounded-3xl overflow-hidden backdrop-blur-md">
+                <div className="hidden md:grid grid-cols-5 gap-2 md:gap-3 p-3 md:p-5 bg-gradient-to-r from-white/10 to-transparent border-b border-white/10">
                   <div className="col-span-2 text-xs font-bold text-muted-foreground uppercase">Product</div>
                   <div className="text-xs font-bold text-muted-foreground uppercase">Price</div>
                   <div className="text-xs font-bold text-muted-foreground uppercase">Qty</div>
                   <div className="text-xs font-bold text-muted-foreground uppercase text-right">Total</div>
                 </div>
 
-                <div className="hide-scrollbar max-h-[400px] overflow-y-auto">
+                <div className="hide-scrollbar max-h-[500px] md:max-h-[400px] overflow-y-auto">
                   {cartItems.map((item, i) => (
                     <motion.div
                       key={item.id}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.05 * i }}
-                      className="grid grid-cols-1 sm:grid-cols-5 gap-3 p-5 border-b border-white/5 hover:bg-white/5 transition-all duration-300 items-center group"
+                      className="grid grid-cols-4 md:grid-cols-5 gap-2 md:gap-3 p-3 md:p-5 border-b border-white/5 hover:bg-white/5 transition-all duration-300 items-center group"
                     >
                       {/* Product */}
-                      <div className="sm:col-span-2 flex gap-4 items-center min-w-0">
-                        <div className="w-20 h-20 bg-gradient-to-br from-white/20 to-white/5 rounded-xl p-2 flex-shrink-0 flex items-center justify-center group-hover:from-white/30 group-hover:to-white/10 transition-all duration-300 shadow-lg shadow-purple-500/10">
+                      <div className="md:col-span-2 col-span-3 flex gap-2 md:gap-4 items-center min-w-0">
+                        <div className="w-14 h-14 md:w-20 md:h-20 bg-gradient-to-br from-white/20 to-white/5 rounded-lg md:rounded-xl p-2 flex-shrink-0 flex items-center justify-center group-hover:from-white/30 group-hover:to-white/10 transition-all duration-300 shadow-lg shadow-purple-500/10">
                           <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-white truncate text-sm">{item.name}</h4>
-                          <p className="text-xs text-muted-foreground">{item.category}</p>
-                          <div className="flex gap-1 mt-1">
+                          <h4 className="font-semibold text-white truncate text-xs md:text-sm">{item.name}</h4>
+                          <p className="text-xs text-muted-foreground hidden md:block">{item.category}</p>
+                          <div className="flex gap-0.5 mt-1 md:flex">
                             {[...Array(5)].map((_, i) => (
-                              <Sparkles key={i} className="w-3 h-3 text-yellow-400" fill="currentColor" />
+                              <Sparkles key={i} className="w-2 md:w-3 h-2 md:h-3 text-yellow-400" fill="currentColor" />
                             ))}
                           </div>
                         </div>
                       </div>
 
-                      {/* Price */}
-                      <div className="hidden sm:block text-sm">
+                      {/* Price - Hide on mobile */}
+                      <div className="hidden md:block text-sm">
                         <span className="text-white font-semibold">${item.price.toLocaleString()}</span>
                       </div>
 
                       {/* Quantity */}
-                      <div className="flex items-center justify-between sm:justify-center">
-                        <span className="sm:hidden text-xs text-muted-foreground">Qty:</span>
-                        <div className="flex items-center gap-1 bg-black/60 rounded-lg p-1.5 border border-white/20">
+                      <div className="col-span-1 flex items-center justify-end md:justify-center">
+                        <div className="flex items-center gap-0.5 bg-black/60 rounded-lg p-1 md:p-1.5 border border-white/20">
                           <Button 
                             size="icon" 
                             variant="ghost" 
-                            className="h-6 w-6 rounded hover:bg-white/30 text-white p-0"
+                            className="h-5 w-5 md:h-6 md:w-6 rounded hover:bg-white/30 text-white p-0 text-xs"
                             onClick={() => updateQuantity(i, item.quantity - 1)}
                           >
-                            <Minus className="w-3 h-3" />
+                            <Minus className="w-2.5 h-2.5 md:w-3 md:h-3" />
                           </Button>
-                          <span className="text-white font-bold w-5 text-center text-xs">{item.quantity}</span>
+                          <span className="text-white font-bold w-4 md:w-5 text-center text-xs">{item.quantity}</span>
                           <Button 
                             size="icon" 
                             variant="ghost" 
-                            className="h-6 w-6 rounded hover:bg-white/30 text-white p-0"
+                            className="h-5 w-5 md:h-6 md:w-6 rounded hover:bg-white/30 text-white p-0"
                             onClick={() => updateQuantity(i, item.quantity + 1)}
                           >
-                            <Plus className="w-3 h-3" />
+                            <Plus className="w-2.5 h-2.5 md:w-3 md:h-3" />
                           </Button>
                         </div>
                       </div>
 
-                      {/* Total & Actions */}
-                      <div className="flex items-center justify-between sm:justify-end gap-2">
-                        <span className="font-bold text-primary">${(item.price * item.quantity).toLocaleString()}</span>
-                        <div className="flex gap-1">
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className="text-muted-foreground hover:text-pink-400 h-6 w-6 hover:bg-pink-400/10"
-                          >
-                            <Heart className="w-3 h-3" />
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className="text-muted-foreground hover:text-red-400 h-6 w-6 hover:bg-red-400/10"
-                            onClick={() => removeItem(i)}
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </Button>
-                        </div>
+                      {/* Total & Delete */}
+                      <div className="col-span-1 flex items-center justify-end gap-1">
+                        <span className="font-bold text-primary text-xs md:text-sm">${(item.price * item.quantity).toLocaleString()}</span>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="text-muted-foreground hover:text-red-400 h-5 w-5 md:h-6 md:w-6 hover:bg-red-400/10 flex-shrink-0"
+                          onClick={() => removeItem(i)}
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </Button>
                       </div>
                     </motion.div>
                   ))}
@@ -220,7 +208,7 @@ export default function CartPage() {
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="relative h-96 bg-gradient-to-b from-purple-500/15 via-pink-500/10 to-blue-500/15 border-2 border-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-3xl overflow-hidden flex items-end justify-center backdrop-blur-sm"
+                className="relative h-64 md:h-96 bg-gradient-to-b from-purple-500/15 via-pink-500/10 to-blue-500/15 border-2 border-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-2xl md:rounded-3xl overflow-hidden flex items-end justify-center backdrop-blur-sm"
                 style={{
                   borderImage: "linear-gradient(135deg, rgba(168,85,247,0.3), rgba(236,72,153,0.3)) 1"
                 }}
@@ -238,7 +226,7 @@ export default function CartPage() {
                 </div>
                 
                 {/* Dropping Products Container */}
-                <div className="relative w-full h-full flex items-start justify-center pt-8">
+                <div className="relative w-full h-full flex items-start justify-center pt-4 md:pt-8">
                   {cartItems.map((item, i) => (
                     <motion.div
                       key={`drop-${item.id}`}
@@ -248,7 +236,7 @@ export default function CartPage() {
                       className="absolute"
                     >
                       <motion.div 
-                        className="w-20 h-20 bg-white rounded-2xl p-3 flex items-center justify-center shadow-2xl shadow-purple-500/50 border-2 border-gradient-to-r from-purple-300 to-pink-300"
+                        className="w-14 h-14 md:w-20 md:h-20 bg-white rounded-xl md:rounded-2xl p-2 md:p-3 flex items-center justify-center shadow-2xl shadow-purple-500/50 border-2 border-gradient-to-r from-purple-300 to-pink-300"
                         whileHover={{ scale: 1.05, rotateZ: 5 }}
                       >
                         <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
@@ -259,7 +247,7 @@ export default function CartPage() {
 
                 {/* Bucket at bottom - receives products */}
                 <motion.div 
-                  className="absolute bottom-0 flex items-end justify-center w-full pointer-events-none pb-4"
+                  className="absolute bottom-0 flex items-end justify-center w-full pointer-events-none pb-2 md:pb-4"
                   variants={bucketVariants}
                   initial="hidden"
                   animate={["visible", "bounce"]}
@@ -269,9 +257,9 @@ export default function CartPage() {
                     <div className="absolute inset-0 blur-2xl bg-gradient-to-r from-purple-600 to-pink-600 opacity-50 -z-10" />
                     
                     {/* Bucket */}
-                    <div className="w-44 h-32 bg-gradient-to-b from-purple-600 to-pink-600 rounded-b-3xl shadow-2xl shadow-purple-500/60 border-4 border-purple-400 flex items-center justify-center overflow-hidden relative">
+                    <div className="w-32 h-24 md:w-44 md:h-32 bg-gradient-to-b from-purple-600 to-pink-600 rounded-b-2xl md:rounded-b-3xl shadow-2xl shadow-purple-500/60 border-4 border-purple-400 flex items-center justify-center overflow-hidden relative">
                       {/* Bucket handle */}
-                      <div className="absolute -top-8 left-6 right-6 h-12 border-4 border-purple-400 rounded-full" />
+                      <div className="absolute -top-6 md:-top-8 left-4 md:left-6 right-4 md:right-6 h-8 md:h-12 border-4 border-purple-400 rounded-full" />
                       
                       {/* Shimmer effect */}
                       <motion.div 
@@ -286,39 +274,16 @@ export default function CartPage() {
                           animate={{ y: [0, -6, 0] }}
                           transition={{ duration: 1, repeat: Infinity }}
                         >
-                          <Truck className="w-12 h-12 text-white mx-auto mb-1" />
+                          <Truck className="w-8 h-8 md:w-12 md:h-12 text-white mx-auto mb-0.5 md:mb-1" />
                         </motion.div>
-                        <p className="text-white font-bold text-sm">Ready for Delivery</p>
-                        <p className="text-white/80 text-xs">Checkout to continue</p>
+                        <p className="text-white font-bold text-xs md:text-sm">Ready for Delivery</p>
+                        <p className="text-white/80 text-xs hidden md:block">Checkout to continue</p>
                       </div>
                     </div>
                   </motion.div>
                 </motion.div>
               </motion.div>
 
-              {/* Frequently Bought Together */}
-              <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-md">
-                <h3 className="font-bold text-white text-lg flex items-center gap-2 mb-4">
-                  <Flame className="w-5 h-5 text-orange-400" /> Frequently Bought Together
-                </h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {frequentlyBought.map((prod, i) => (
-                    <motion.div
-                      key={prod.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 * i }}
-                      className="p-3 rounded-lg bg-black/40 border border-white/10 hover:border-white/30 transition-all cursor-pointer group"
-                    >
-                      <div className="w-12 h-12 bg-white/10 rounded-lg p-1 flex items-center justify-center mb-2 group-hover:bg-white/20 transition-colors">
-                        <img src={prod.image} alt={prod.name} className="w-full h-full object-contain" />
-                      </div>
-                      <p className="text-xs font-semibold text-white truncate">{prod.name}</p>
-                      <p className="text-xs text-primary font-bold">${prod.price}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
             </motion.div>
 
             {/* RIGHT SIDE - ORDER SUMMARY & OPTIONS */}
