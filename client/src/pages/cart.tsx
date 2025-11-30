@@ -49,6 +49,9 @@ export default function CartPage() {
   const deliveryFee = deliveryOption === "express" ? 14.99 : (afterDiscount > 100 ? 0 : 9.99);
   const insuranceFee = insurance ? 4.99 : 0;
   const giftFee = giftWrap ? 3.99 : 0;
+  
+  // Currency display helper
+  const formatPrice = (price: number) => `৳${price.toFixed(2)}`;
   const tax = Math.round((afterDiscount + deliveryFee) * 0.08 * 100) / 100;
   const total = afterDiscount + deliveryFee + insuranceFee + giftFee + tax;
 

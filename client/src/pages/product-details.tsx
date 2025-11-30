@@ -186,15 +186,15 @@ export default function ProductDetails() {
               
               <div className="flex items-end gap-2 md:gap-4 mb-6 flex-wrap">
                 <span className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent" data-testid="product-price">
-                  ${product.price.toLocaleString()}
+                  ৳{product.price.toLocaleString()}
                 </span>
                 {product.originalPrice && (
                   <>
                     <span className="text-lg md:text-xl text-white/40 line-through mb-1">
-                      ${product.originalPrice.toLocaleString()}
+                      ৳{product.originalPrice.toLocaleString()}
                     </span>
                     <Badge className="mb-2 bg-green-500/20 text-green-400 border-green-500/20 text-xs md:text-sm">
-                      Save ${(product.originalPrice - product.price).toLocaleString()}
+                      Save ৳{(product.originalPrice - product.price).toLocaleString()}
                     </Badge>
                   </>
                 )}
@@ -540,8 +540,8 @@ export default function ProductDetails() {
                           <span className="text-xs text-white/50">({p.reviews})</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">${p.price}</span>
-                          {p.originalPrice && <span className="text-xs text-white/40 line-through">${p.originalPrice}</span>}
+                          <span className="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">৳{p.price}</span>
+                          {p.originalPrice && <span className="text-xs text-white/40 line-through">৳{p.originalPrice}</span>}
                         </div>
                       </div>
                     </motion.div>
@@ -595,8 +595,8 @@ export default function ProductDetails() {
                           <span className="text-xs text-white/50">({p.reviews})</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">${p.price}</span>
-                          {p.originalPrice && <span className="text-xs text-white/40 line-through">${p.originalPrice}</span>}
+                          <span className="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">৳{p.price}</span>
+                          {p.originalPrice && <span className="text-xs text-white/40 line-through">৳{p.originalPrice}</span>}
                         </div>
                       </div>
                     </motion.div>

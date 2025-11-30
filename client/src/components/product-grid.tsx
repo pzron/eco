@@ -188,11 +188,11 @@ function ProductCard({ product, index }: ProductCardProps) {
             {/* Price */}
             <div className="w-full flex items-center gap-2">
               <span className="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                ${product.price}
+                ৳{product.price}
               </span>
               {product.originalPrice && (
                 <span className="text-xs text-white/40 line-through">
-                  ${product.originalPrice}
+                  ৳{product.originalPrice}
                 </span>
               )}
             </div>
