@@ -82,7 +82,6 @@ export default function CartPage() {
       x: (Math.random() - 0.5) * 120,
       transition: {
         duration: 0.8,
-        ease: "easeIn",
       },
     },
   });
@@ -99,7 +98,6 @@ export default function CartPage() {
       y: [0, -8, 0],
       transition: {
         duration: 0.3,
-        ease: "easeInOut",
         delay: 1.2,
         repeat: Infinity,
         repeatDelay: 2.5,
