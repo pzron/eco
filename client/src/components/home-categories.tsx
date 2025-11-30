@@ -22,16 +22,6 @@ export function HomeCategories() {
 
   return (
     <section className="py-12 px-4 bg-gradient-to-b from-purple-950/10 via-transparent to-pink-950/10 border-b border-white/5 overflow-hidden">
-      <div className="container mx-auto max-w-7xl mb-8">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-2">Shop by Category</h2>
-          <p className="text-white/60">Browse 34 categories with exclusive products</p>
-        </motion.div>
-      </div>
 
       {/* Auto-scrolling horizontal carousel */}
       <div className="w-full overflow-hidden">
