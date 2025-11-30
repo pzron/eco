@@ -7,7 +7,7 @@ import { ChatWidget } from "@/components/chat-widget";
 import { CartDrawer } from "@/components/cart-drawer";
 import Home from "@/pages/home";
 import ProductsPage from "@/pages/products";
-import ProductDetails from "@/pages/product-detail";
+import ProductDetails from "@/pages/product-details";
 import CartPage from "@/pages/cart";
 import CheckoutPage from "@/pages/checkout";
 import SignUpPage from "@/pages/signup";
