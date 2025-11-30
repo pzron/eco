@@ -2,7 +2,6 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { categories, products, type Category } from "@/data/products";
-import { CategoriesCarousel } from "@/components/categories-carousel";
 import { Search, Mic, MicOff, Grid, List, Star, ShoppingCart, Heart, X, Menu, ChevronLeft, SlidersHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Link, useLocation, useSearch } from "wouter";
@@ -138,8 +137,6 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-white">
       <Navbar />
-      
-      <CategoriesCarousel />
       
       <main className="pt-20 pb-20">
         {/* Header Section */}
