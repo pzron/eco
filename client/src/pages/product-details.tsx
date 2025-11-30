@@ -26,6 +26,13 @@ export default function ProductDetails() {
   const [userPurchased, setUserPurchased] = useState(true);
   const [similarCarouselIndex, setSimilarCarouselIndex] = useState(0);
   const [topCarouselIndex, setTopCarouselIndex] = useState(0);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [reviewText, setReviewText] = useState("");
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviews, setReviews] = useState([
+    { id: 1, author: "John Doe", rating: 5, text: "Excellent product! Highly recommended.", date: "2 days ago" },
+    { id: 2, author: "Jane Smith", rating: 4, text: "Great quality, fast shipping.", date: "5 days ago" },
+  ]);
   
   const { addItem } = useCart();
 
@@ -122,9 +129,10 @@ export default function ProductDetails() {
                     <span className="text-white/60">Product Video Preview</span>
                   </div>
                 ) : (
-                  <ProductViewer 
-                    color={selectedColor} 
-                    productType={product.model3dType || "box"}
+                  <img 
+                    src={product.image} 
+                    alt={product.name}
+                    className="w-full h-full object-contain bg-white/5"
                   />
                 )}
                 
@@ -500,10 +508,84 @@ export default function ProductDetails() {
               <TabsContent value="reviews" className="mt-0 space-y-6">
                 <div className="flex items-center justify-between">
                   <h3 className="text-2xl font-heading font-bold text-white">Customer Reviews</h3>
-                  {userPurchased && (
-                    <Button className="bg-gradient-to-r from-purple-500 to-pink-500">Write a Review</Button>
+                  {userPurchased && !showReviewForm && (
+                    <Button onClick={() => setShowReviewForm(true)} className="bg-gradient-to-r from-purple-500 to-pink-500">Write a Review</Button>
                   )}
                 </div>
+
+                {/* Review Form */}
+                <AnimatePresence>
+                  {showReviewForm && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4"
+                    >
+                      <h4 className="text-lg font-semibold text-white">Share your review</h4>
+                      
+                      <div>
+                        <label className="text-sm font-medium text-white/60 mb-3 block">Rating</label>
+                        <div className="flex gap-2">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <button
+                              key={star}
+                              onClick={() => setReviewRating(star)}
+                              className="transition-transform hover:scale-110"
+                            >
+                              <Star
+                                className={`w-7 h-7 ${star <= reviewRating ? 'fill-yellow-400 text-yellow-400' : 'text-white/20'}`}
+                              />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium text-white/60 mb-2 block">Your Review</label>
+                        <textarea
+                          value={reviewText}
+                          onChange={(e) => setReviewText(e.target.value)}
+                          placeholder="Share your experience with this product..."
+                          className="w-full bg-white/5 border border-white/10 text-white placeholder:text-white/40 resize-none rounded-lg p-3 focus:outline-none focus:border-purple-500/50"
+                          rows={4}
+                        />
+                      </div>
+
+                      <div className="flex gap-3">
+                        <Button
+                          onClick={() => {
+                            if (reviewText.trim()) {
+                              const newReview = {
+                                id: reviews.length + 1,
+                                author: "You",
+                                rating: reviewRating,
+                                text: reviewText,
+                                date: "just now"
+                              };
+                              setReviews([newReview, ...reviews]);
+                              setReviewText("");
+                              setReviewRating(5);
+                              setShowReviewForm(false);
+                            }
+                          }}
+                          disabled={!reviewText.trim()}
+                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 disabled:opacity-50"
+                        >
+                          Post Review
+                        </Button>
+                        <Button
+                          onClick={() => setShowReviewForm(false)}
+                          variant="outline"
+                          className="border-white/20 text-white hover:bg-white/10"
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 <div className="flex items-center gap-8 p-6 rounded-2xl bg-white/5 border border-white/10">
                   <div className="text-center">
                     <div className="text-5xl font-bold text-white">{product.rating}</div>
@@ -527,6 +609,29 @@ export default function ProductDetails() {
                       </div>
                     ))}
                   </div>
+                </div>
+
+                {/* Reviews List */}
+                <div className="space-y-4">
+                  {reviews.map((review) => (
+                    <div key={review.id} className="bg-white/5 border border-white/10 rounded-xl p-4">
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <h4 className="font-semibold text-white">{review.author}</h4>
+                          <p className="text-xs text-white/40">{review.date}</p>
+                        </div>
+                        <div className="flex gap-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-3 h-3 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-white/20'}`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-white/70 text-sm">{review.text}</p>
+                    </div>
+                  ))}
                 </div>
               </TabsContent>
             </div>
