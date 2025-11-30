@@ -119,3 +119,6 @@ This starts both the Vite frontend dev server and the Express backend.
 - Expanded product categories from 8 to 12+ with clickable routing
 - Profile icon now shows Login/Register dropdown for unauthenticated users
 - Added more products across new categories (Gaming, Books, Kids, etc.)
+- Redesigned hero section to be smaller (2/3 of original size) for better user experience
+- Moved stats cards (Products, Rating, Countries, Support) to Footer's "Ready to Transform" section
+- Stats cards now feature animated entrance with framer-motion
