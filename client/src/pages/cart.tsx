@@ -53,29 +53,31 @@ export default function CartPage() {
   const tax = Math.round((afterDiscount + shipping) * 0.08 * 100) / 100;
   const total = afterDiscount + shipping + tax;
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
+  const bucketVariants = {
+    hidden: { opacity: 0, y: -50 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
-      },
+      y: 0,
+      transition: { duration: 0.3, delay: 0.5 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: -200, rotateX: 45 },
-    visible: {
+    hidden: { opacity: 0, y: -300, x: 0 },
+    visible: (i: number) => ({
       opacity: 1,
-      y: 0,
-      rotateX: 0,
+      y: 200,
+      x: (i % 3 - 1) * 40,
       transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15,
+        delay: i * 0.12,
+        duration: 0.6,
       },
-    },
+    }),
+  };
+
+  const productVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 },
   };
 
   return (
@@ -115,12 +117,64 @@ export default function CartPage() {
           </motion.div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* BUCKET ANIMATION */}
+            {isAnimating && (
+              <motion.div 
+                className="lg:col-span-2 relative h-80 mb-8 flex items-center justify-center"
+              >
+                {/* Product Images Dropping */}
+                <div className="relative w-full h-full">
+                  {cartItems.map((item, i) => (
+                    <motion.div
+                      key={`drop-${item.id}`}
+                      custom={i}
+                      variants={itemVariants}
+                      initial="hidden"
+                      animate="visible"
+                      className="absolute"
+                      style={{ left: "50%", marginLeft: "-30px" }}
+                    >
+                      <div className="w-16 h-16 bg-white rounded-lg p-1 flex items-center justify-center shadow-lg">
+                        <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
+                      </div>
+                    </motion.div>
+                  ))}
+
+                  {/* Bucket */}
+                  <motion.div 
+                    variants={bucketVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="absolute bottom-0 left-1/2 transform -translate-x-1/2"
+                  >
+                    <div className="relative">
+                      {/* Bucket Body */}
+                      <div className="w-48 h-32 bg-gradient-to-b from-purple-500 to-pink-500 rounded-b-3xl border-4 border-purple-600 shadow-2xl shadow-purple-500/50 flex items-center justify-center relative overflow-hidden">
+                        {/* Bucket Handle */}
+                        <div className="absolute -top-6 left-4 right-4 h-12 border-4 border-purple-600 rounded-t-full" />
+                        
+                        {/* Shimmer Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 animate-pulse" />
+                        
+                        {/* Ready Badge */}
+                        <div className="text-center z-10">
+                          <Truck className="w-8 h-8 text-white mx-auto mb-2 animate-bounce" />
+                          <p className="text-white font-bold text-sm">Ready for</p>
+                          <p className="text-white font-bold text-sm">Delivery</p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
+            )}
+
             {/* PRODUCTS SECTION - COMPACT */}
             <motion.div 
               className="lg:col-span-2 space-y-3"
-              variants={containerVariants}
-              initial="hidden"
-              animate={isAnimating ? "visible" : "hidden"}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2, duration: 0.5 }}
             >
               <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
                 <div className="hidden md:grid grid-cols-12 gap-4 p-3 bg-white/5 border-b border-white/10 text-xs font-semibold text-muted-foreground">
@@ -134,7 +188,7 @@ export default function CartPage() {
                 {cartItems.map((item, i) => (
                   <motion.div
                     key={item.id}
-                    variants={itemVariants}
+                    variants={productVariants}
                     className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 border-b border-white/5 hover:bg-white/5 transition-colors items-center"
                   >
                     {/* Product Image & Name */}
