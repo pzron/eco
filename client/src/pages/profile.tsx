@@ -4,12 +4,33 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
+import { useLocation } from "wouter";
 import { 
   User, Package, Heart, Award, Settings, 
   LogOut, MapPin, CreditCard, Clock, ChevronRight 
 } from "lucide-react";
+import { useAuthStore } from "@/stores/auth";
 
 export default function ProfilePage() {
+  const [, navigate] = useLocation();
+  const { user, logout, isAuthenticated } = useAuthStore();
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+        <Navbar />
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-white mb-4">Please login first</h2>
+          <Button 
+            onClick={() => navigate("/signup")}
+            className="bg-primary hover:bg-primary/90"
+          >
+            Go to Login
+          </Button>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-white pb-20">
       <Navbar />
@@ -25,13 +46,13 @@ export default function ProfilePage() {
             >
               <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary p-1 mx-auto mb-4">
                 <img 
-                  src="https://github.com/shadcn.png" 
+                  src={user?.avatar || "https://github.com/shadcn.png"} 
                   alt="User" 
                   className="w-full h-full rounded-full border-4 border-black"
                 />
               </div>
-              <h2 className="text-xl font-bold text-white">Alex Chen</h2>
-              <p className="text-muted-foreground text-sm mb-4">alex.chen@example.com</p>
+              <h2 className="text-xl font-bold text-white">{user?.name || "User"}</h2>
+              <p className="text-muted-foreground text-sm mb-4">{user?.email}</p>
               <Badge className="bg-primary/20 text-primary border-primary/20 mb-4">Platinum Member</Badge>
               
               <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden mb-2">
@@ -48,7 +69,6 @@ export default function ProfilePage() {
                 { icon: MapPin, label: "Addresses" },
                 { icon: CreditCard, label: "Payment Methods" },
                 { icon: Settings, label: "Settings" },
-                { icon: LogOut, label: "Log Out", color: "text-red-400 hover:bg-red-500/10" },
               ].map((item, i) => (
                 <Button
                   key={i}
@@ -56,13 +76,24 @@ export default function ProfilePage() {
                   className={`w-full justify-start h-12 text-base ${
                     item.active 
                       ? "bg-white/10 text-white border border-white/5" 
-                      : item.color || "text-muted-foreground hover:text-white hover:bg-white/5"
+                      : "text-muted-foreground hover:text-white hover:bg-white/5"
                   }`}
                 >
                   <item.icon className="mr-3 w-5 h-5" />
                   {item.label}
                 </Button>
               ))}
+              <Button
+                onClick={() => {
+                  logout();
+                  navigate("/");
+                }}
+                className="w-full justify-start h-12 text-base text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                variant="ghost"
+              >
+                <LogOut className="mr-3 w-5 h-5" />
+                Log Out
+              </Button>
             </nav>
           </div>
 

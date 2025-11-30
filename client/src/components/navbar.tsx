@@ -1,10 +1,11 @@
 import { Link, useLocation } from "wouter";
-import { Search, ShoppingCart, User, Menu, Heart, Sparkles, Mic, MicOff, LogIn, UserPlus } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, Heart, Sparkles, Mic, MicOff, LogIn, UserPlus, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState, useEffect, useRef } from "react";
 import { useCart } from "@/hooks/use-cart";
+import { useAuthStore } from "@/stores/auth";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   DropdownMenu,
@@ -19,6 +20,7 @@ export function Navbar() {
   const [isListening, setIsListening] = useState(false);
   const [, navigate] = useLocation();
   const { getItemCount, setIsOpen } = useCart();
+  const { isAuthenticated, user, logout } = useAuthStore();
   const itemCount = getItemCount();
   const recognitionRef = useRef<any>(null);
 
@@ -194,35 +196,82 @@ export function Navbar() {
             </AnimatePresence>
           </Button>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="h-8 w-8 lg:h-10 lg:w-10 text-white/70 hover:text-white hover:bg-white/10 rounded-full"
-                data-testid="profile-button"
+          {isAuthenticated && user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8 lg:h-10 lg:w-10 text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 rounded-full border border-purple-500/30"
+                  data-testid="profile-button"
+                >
+                  <User className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="end" 
+                className="w-56 bg-[#0f0f15]/95 backdrop-blur-xl border-white/10"
               >
-                <User className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent 
-              align="end" 
-              className="w-48 bg-[#0f0f15]/95 backdrop-blur-xl border-white/10"
-            >
-              <DropdownMenuItem asChild className="focus:bg-white/10 cursor-pointer">
-                <Link href="/signup" className="flex items-center gap-2 text-white text-sm">
-                  <LogIn className="w-4 h-4" />
-                  Login
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild className="focus:bg-white/10 cursor-pointer">
-                <Link href="/signup" className="flex items-center gap-2 text-white text-sm">
-                  <UserPlus className="w-4 h-4" />
-                  Register
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <div className="px-2 py-3 border-b border-white/10">
+                  <p className="text-xs text-muted-foreground">Signed in as</p>
+                  <p className="text-sm font-semibold text-white truncate">{user.email}</p>
+                </div>
+                <DropdownMenuItem asChild className="focus:bg-white/10 cursor-pointer">
+                  <Link href="/profile" className="flex items-center gap-2 text-white text-sm">
+                    <User className="w-4 h-4" />
+                    My Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="focus:bg-white/10 cursor-pointer">
+                  <Link href="/profile" className="flex items-center gap-2 text-white text-sm">
+                    <Settings className="w-4 h-4" />
+                    Settings
+                  </Link>
+                </DropdownMenuItem>
+                <div className="my-1 border-t border-white/10" />
+                <DropdownMenuItem 
+                  onClick={() => {
+                    logout();
+                    navigate("/");
+                  }}
+                  className="focus:bg-red-500/10 cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4 mr-2 text-red-400" />
+                  <span className="text-red-400">Logout</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-8 w-8 lg:h-10 lg:w-10 text-white/70 hover:text-white hover:bg-white/10 rounded-full"
+                  data-testid="profile-button"
+                >
+                  <User className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="end" 
+                className="w-48 bg-[#0f0f15]/95 backdrop-blur-xl border-white/10"
+              >
+                <DropdownMenuItem asChild className="focus:bg-white/10 cursor-pointer">
+                  <Link href="/signup" className="flex items-center gap-2 text-white text-sm">
+                    <LogIn className="w-4 h-4" />
+                    Login
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="focus:bg-white/10 cursor-pointer">
+                  <Link href="/signup" className="flex items-center gap-2 text-white text-sm">
+                    <UserPlus className="w-4 h-4" />
+                    Sign Up
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
 
           <Sheet>
             <SheetTrigger asChild>

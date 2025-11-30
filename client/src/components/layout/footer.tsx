@@ -121,10 +121,29 @@ export function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-3xl md:text-4xl font-heading font-bold text-white mb-4"
+              className="text-3xl md:text-4xl font-heading font-bold text-white mb-6"
             >
               Ready to Transform Your Shopping?
             </motion.h2>
+            
+            {/* Quick Features */}
+            <div className="flex flex-wrap justify-center gap-3 mb-8">
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-blue-500/5 border border-blue-500/30 text-blue-300 text-sm font-semibold flex items-center gap-2"
+              >
+                <Sparkles className="w-4 h-4" />
+                Free Shipping
+              </motion.div>
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                className="px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-500/5 border border-amber-500/30 text-amber-300 text-sm font-semibold flex items-center gap-2"
+              >
+                <Sparkles className="w-4 h-4" />
+                Fast Delivery
+              </motion.div>
+            </div>
+            
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

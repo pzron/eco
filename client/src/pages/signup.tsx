@@ -2,10 +2,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { ArrowRight, Github, Mail } from "lucide-react";
+import { useState } from "react";
+import { useAuthStore } from "@/stores/auth";
 
 export default function SignUpPage() {
+  const [, navigate] = useLocation();
+  const { signup, login } = useAuthStore();
+  const [isLogin, setIsLogin] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isLogin) {
+      login(email, password);
+    } else {
+      signup(email, password, `${firstName} ${lastName}`);
+    }
+    navigate("/");
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground flex relative overflow-hidden">
       {/* Animated Background */}
@@ -31,34 +51,67 @@ export default function SignUpPage() {
                </div>
              </Link>
 
-             <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
-             <p className="text-muted-foreground mb-8">Join the future of shopping today.</p>
+             <h1 className="text-3xl font-bold text-white mb-2">
+               {isLogin ? "Welcome Back" : "Create Account"}
+             </h1>
+             <p className="text-muted-foreground mb-8">
+               {isLogin ? "Sign in to your account" : "Join the future of shopping today."}
+             </p>
 
-             <div className="space-y-4">
-               <div className="grid grid-cols-2 gap-4">
-                 <div className="space-y-2">
-                   <Label>First Name</Label>
-                   <Input className="bg-white/5 border-white/10" placeholder="John" />
+             <form onSubmit={handleSubmit} className="space-y-4">
+               {!isLogin && (
+                 <div className="grid grid-cols-2 gap-4">
+                   <div className="space-y-2">
+                     <Label>First Name</Label>
+                     <Input 
+                       className="bg-white/5 border-white/10" 
+                       placeholder="John" 
+                       value={firstName}
+                       onChange={(e) => setFirstName(e.target.value)}
+                       required
+                     />
+                   </div>
+                   <div className="space-y-2">
+                     <Label>Last Name</Label>
+                     <Input 
+                       className="bg-white/5 border-white/10" 
+                       placeholder="Doe"
+                       value={lastName}
+                       onChange={(e) => setLastName(e.target.value)}
+                       required
+                     />
+                   </div>
                  </div>
-                 <div className="space-y-2">
-                   <Label>Last Name</Label>
-                   <Input className="bg-white/5 border-white/10" placeholder="Doe" />
-                 </div>
-               </div>
+               )}
                <div className="space-y-2">
                  <Label>Email</Label>
-                 <Input className="bg-white/5 border-white/10" placeholder="john@example.com" type="email" />
+                 <Input 
+                   className="bg-white/5 border-white/10" 
+                   placeholder="john@example.com" 
+                   type="email"
+                   value={email}
+                   onChange={(e) => setEmail(e.target.value)}
+                   required
+                 />
                </div>
                <div className="space-y-2">
                  <Label>Password</Label>
-                 <Input className="bg-white/5 border-white/10" placeholder="••••••••" type="password" />
+                 <Input 
+                   className="bg-white/5 border-white/10" 
+                   placeholder="••••••••" 
+                   type="password"
+                   value={password}
+                   onChange={(e) => setPassword(e.target.value)}
+                   required
+                 />
                </div>
 
-               <Button className="w-full h-12 text-lg bg-primary hover:bg-primary/90 mt-4">
-                 Sign Up <ArrowRight className="ml-2 w-5 h-5" />
+               <Button type="submit" className="w-full h-12 text-lg bg-primary hover:bg-primary/90 mt-4">
+                 {isLogin ? "Sign In" : "Sign Up"} <ArrowRight className="ml-2 w-5 h-5" />
                </Button>
+             </form>
 
-               <div className="relative my-6">
+             <div className="relative my-6">
                  <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/10" /></div>
                  <div className="relative flex justify-center text-xs uppercase"><span className="bg-black px-2 text-muted-foreground">Or continue with</span></div>
                </div>
@@ -74,7 +127,13 @@ export default function SignUpPage() {
              </div>
              
              <p className="text-center text-sm text-muted-foreground mt-8">
-               Already have an account? <Link href="/login"><span className="text-primary hover:underline cursor-pointer">Sign In</span></Link>
+               {isLogin ? "Don't have an account? " : "Already have an account? "}
+               <span 
+                 onClick={() => setIsLogin(!isLogin)}
+                 className="text-primary hover:underline cursor-pointer"
+               >
+                 {isLogin ? "Sign Up" : "Sign In"}
+               </span>
              </p>
           </div>
 

@@ -4,15 +4,30 @@ import { motion } from "framer-motion";
 import { products } from "@/data/products";
 import { Minus, Plus, Trash2, ArrowRight, ShieldCheck, CreditCard, Wallet } from "lucide-react";
 import { Link } from "wouter";
+import { useState } from "react";
 
 export default function CartPage() {
-  const cartItems = [
+  const [cartItems, setCartItems] = useState([
     { ...products[0], quantity: 1 },
     { ...products[3], quantity: 2 }
-  ];
+  ]);
+
+  const updateQuantity = (index: number, newQty: number) => {
+    if (newQty <= 0) {
+      removeItem(index);
+      return;
+    }
+    const updated = [...cartItems];
+    updated[index].quantity = newQty;
+    setCartItems(updated);
+  };
+
+  const removeItem = (index: number) => {
+    setCartItems(cartItems.filter((_, i) => i !== index));
+  };
 
   const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-  const shipping = 0;
+  const shipping = subtotal > 50 ? 0 : 10;
   const total = subtotal + shipping;
 
   return (
@@ -48,18 +63,33 @@ export default function CartPage() {
                       <h3 className="font-bold text-white text-lg md:text-xl">{item.name}</h3>
                       <p className="text-sm text-muted-foreground">{item.category} • In Stock</p>
                     </div>
-                    <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-red-400">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="text-muted-foreground hover:text-red-400"
+                      onClick={() => removeItem(i)}
+                    >
                       <Trash2 className="w-5 h-5" />
                     </Button>
                   </div>
                   
                   <div className="flex justify-between items-end">
                     <div className="flex items-center gap-3 bg-black/20 rounded-full p-1 border border-white/10">
-                      <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full hover:bg-white/10 text-white">
+                      <Button 
+                        size="icon" 
+                        variant="ghost" 
+                        className="h-8 w-8 rounded-full hover:bg-white/10 text-white"
+                        onClick={() => updateQuantity(i, item.quantity - 1)}
+                      >
                         <Minus className="w-3 h-3" />
                       </Button>
                       <span className="text-white font-medium w-4 text-center">{item.quantity}</span>
-                      <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full hover:bg-white/10 text-white">
+                      <Button 
+                        size="icon" 
+                        variant="ghost" 
+                        className="h-8 w-8 rounded-full hover:bg-white/10 text-white"
+                        onClick={() => updateQuantity(i, item.quantity + 1)}
+                      >
                         <Plus className="w-3 h-3" />
                       </Button>
                     </div>
@@ -79,47 +109,60 @@ export default function CartPage() {
             <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md sticky top-24">
               <h2 className="text-xl font-bold text-white mb-6">Order Summary</h2>
               
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Subtotal</span>
-                  <span className="text-white">${subtotal.toLocaleString()}</span>
+              {cartItems.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-muted-foreground mb-4">Your cart is empty</p>
+                  <Link href="/products">
+                    <Button className="bg-primary hover:bg-primary/90">
+                      Continue Shopping
+                    </Button>
+                  </Link>
                 </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Shipping</span>
-                  <span className="text-green-400">Free</span>
-                </div>
-                <div className="flex justify-between text-muted-foreground">
-                  <span>Tax</span>
-                  <span className="text-white">Calculated at checkout</span>
-                </div>
-                <div className="h-px bg-white/10 my-4" />
-                <div className="flex justify-between text-lg font-bold">
-                  <span className="text-white">Total</span>
-                  <span className="text-primary">${total.toLocaleString()}</span>
-                </div>
-              </div>
+              ) : (
+                <>
+                  <div className="space-y-4 mb-6">
+                    <div className="flex justify-between text-muted-foreground">
+                      <span>Subtotal</span>
+                      <span className="text-white">${subtotal.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between text-muted-foreground">
+                      <span>Shipping</span>
+                      <span className="text-green-400">Free</span>
+                    </div>
+                    <div className="flex justify-between text-muted-foreground">
+                      <span>Tax</span>
+                      <span className="text-white">Calculated at checkout</span>
+                    </div>
+                    <div className="h-px bg-white/10 my-4" />
+                    <div className="flex justify-between text-lg font-bold">
+                      <span className="text-white">Total</span>
+                      <span className="text-primary">${total.toLocaleString()}</span>
+                    </div>
+                  </div>
 
-              <div className="space-y-4">
-                <Link href="/checkout">
-                  <Button className="w-full h-12 text-lg bg-gradient-to-r from-primary to-secondary hover:opacity-90 shadow-[0_0_20px_rgba(168,85,247,0.3)]">
-                    Proceed to Checkout <ArrowRight className="ml-2 w-5 h-5" />
-                  </Button>
-                </Link>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10">
-                    <Wallet className="mr-2 w-4 h-4" /> Crypto
-                  </Button>
-                  <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10">
-                    <CreditCard className="mr-2 w-4 h-4" /> Card
-                  </Button>
-                </div>
+                  <div className="space-y-4">
+                    <Link href="/checkout">
+                      <Button className="w-full h-12 text-lg bg-gradient-to-r from-primary to-secondary hover:opacity-90 shadow-[0_0_20px_rgba(168,85,247,0.3)]">
+                        Proceed to Checkout <ArrowRight className="ml-2 w-5 h-5" />
+                      </Button>
+                    </Link>
+                    
+                    <div className="grid grid-cols-2 gap-3">
+                      <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10">
+                        <Wallet className="mr-2 w-4 h-4" /> Crypto
+                      </Button>
+                      <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10">
+                        <CreditCard className="mr-2 w-4 h-4" /> Card
+                      </Button>
+                    </div>
 
-                <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground mt-4">
-                  <ShieldCheck className="w-4 h-4 text-green-400" />
-                  Secure Encrypted Checkout
-                </div>
-              </div>
+                    <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground mt-4">
+                      <ShieldCheck className="w-4 h-4 text-green-400" />
+                      Secure Encrypted Checkout
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </motion.div>
         </div>
