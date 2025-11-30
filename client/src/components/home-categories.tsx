@@ -23,6 +23,11 @@ export function HomeCategories() {
   return (
     <section className="py-12 px-4 bg-gradient-to-b from-purple-950/10 via-transparent to-pink-950/10 border-b border-white/5 overflow-hidden">
       {/* Auto-scrolling horizontal carousel */}
+      <div className="container mx-auto max-w-7xl mb-8">
+        <h2 className="text-3xl md:text-4xl font-heading font-bold text-white">
+          Shop by Category
+        </h2>
+      </div>
       <div className="w-full overflow-hidden">
         <motion.div
           className="flex gap-4 px-4"
