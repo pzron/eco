@@ -113,3 +113,9 @@ This starts both the Vite frontend dev server and the Express backend.
 - Implemented WebGLErrorBoundary for graceful 3D fallbacks
 - Enhanced admin/vendor/affiliate dashboards with holographic UI
 - Added AI chat widget with product search integration
+- Added voice search to navbar and products page using Web Speech API (Chrome/Edge)
+- Enhanced AI chat widget with voice input/output capabilities
+- Created comprehensive Footer component with Quick Links, Categories, Support sections
+- Expanded product categories from 8 to 12+ with clickable routing
+- Profile icon now shows Login/Register dropdown for unauthenticated users
+- Added more products across new categories (Gaming, Books, Kids, etc.)
