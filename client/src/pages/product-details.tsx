@@ -7,10 +7,10 @@ import { products, getProductById } from "@/data/products";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ShoppingCart, Heart, Share2, ShieldCheck, Truck, 
-  RotateCcw, Zap, Box, Cuboid, ScanFace, Check, Star, Minus, Plus, Sparkles, Play, ChevronLeft, ChevronRight, X
+  RotateCcw, Zap, Box, Cuboid, ScanFace, Check, Star, Minus, Plus, Sparkles
 } from "lucide-react";
 import { useRoute, Link } from "wouter";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useCart } from "@/hooks/use-cart";
 
 export default function ProductDetails() {
@@ -22,40 +22,8 @@ export default function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [showVideo, setShowVideo] = useState(false);
-  const [userPurchased, setUserPurchased] = useState(true);
-  const [similarCarouselIndex, setSimilarCarouselIndex] = useState(0);
-  const [topCarouselIndex, setTopCarouselIndex] = useState(0);
-  const [showReviewForm, setShowReviewForm] = useState(false);
-  const [reviewText, setReviewText] = useState("");
-  const [reviewRating, setReviewRating] = useState(5);
-  const [reviews, setReviews] = useState([
-    { id: 1, author: "John Doe", rating: 5, text: "Excellent product! Highly recommended.", date: "2 days ago" },
-    { id: 2, author: "Jane Smith", rating: 4, text: "Great quality, fast shipping.", date: "5 days ago" },
-  ]);
   
   const { addItem } = useCart();
-
-  const similarProducts = products.filter(
-    p => p.categorySlug === product.categorySlug && p.id !== product.id
-  ).slice(0, 8);
-
-  const topProducts = products.filter(p => p.isBestseller || p.isFeatured).slice(0, 8);
-
-  // Auto-scroll carousels
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSimilarCarouselIndex((prev) => (prev + 1) % Math.max(1, similarProducts.length - 3));
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [similarProducts.length]);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTopCarouselIndex((prev) => (prev + 1) % Math.max(1, topProducts.length - 3));
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [topProducts.length]);
 
   const handleAddToCart = () => {
     setIsAddingToCart(true);
@@ -80,16 +48,6 @@ export default function ProductDetails() {
 
   const sizes = product.sizes || [];
 
-  const getVisibleSimilar = () => {
-    const itemsPerView = window.innerWidth >= 1280 ? 4 : window.innerWidth >= 768 ? 3 : 2;
-    return similarProducts.slice(similarCarouselIndex, similarCarouselIndex + itemsPerView);
-  };
-
-  const getVisibleTop = () => {
-    const itemsPerView = window.innerWidth >= 1280 ? 4 : window.innerWidth >= 768 ? 3 : 2;
-    return topProducts.slice(topCarouselIndex, topCarouselIndex + itemsPerView);
-  };
-
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-foreground selection:bg-primary selection:text-white pb-20">
       <Navbar />
@@ -112,101 +70,66 @@ export default function ProductDetails() {
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="space-y-4"
+              className="h-[500px] lg:h-[600px] w-full rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm overflow-hidden relative shadow-2xl shadow-purple-500/10"
             >
-              {/* 3D Viewer Section */}
-              <div className="h-[500px] lg:h-[600px] w-full rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent backdrop-blur-sm overflow-hidden relative shadow-2xl shadow-purple-500/10">
-                {/* 3D View Label */}
-                <div className="absolute top-4 left-4 z-10">
+              <ProductViewer 
+                color={selectedColor} 
+                productType={product.model3dType || "box"}
+              />
+              
+              <div className="absolute top-4 right-4 flex flex-col gap-2">
+                <Button 
+                  size="icon" 
+                  variant="secondary" 
+                  className="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10" 
+                  title="View in AR"
+                  data-testid="ar-button"
+                >
+                  <Cuboid className="w-5 h-5" />
+                </Button>
+                <Button 
+                  size="icon" 
+                  variant="secondary" 
+                  className="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10" 
+                  title="Try On"
+                  data-testid="tryon-button"
+                >
+                  <ScanFace className="w-5 h-5" />
+                </Button>
+              </div>
+              
+              {product.has3D && (
+                <div className="absolute bottom-4 left-4">
                   <Badge className="bg-gradient-to-r from-purple-500/80 to-pink-500/80 backdrop-blur-xl border-none text-white">
-                    <Box className="w-3 h-3 mr-1" /> {product.name} - 3D View
+                    <Box className="w-3 h-3 mr-1" /> Interactive 3D Model
                   </Badge>
                 </div>
+              )}
+            </motion.div>
 
-                {showVideo ? (
-                  <div className="w-full h-full flex items-center justify-center bg-black/40 relative">
-                    <Play className="w-16 h-16 text-white/40 mr-2" />
-                    <span className="text-white/60">Product Video Preview</span>
-                  </div>
-                ) : (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="grid grid-cols-4 gap-4"
+            >
+              {[0, 1, 2, 3].map((i) => (
+                <div 
+                  key={i} 
+                  onClick={() => setActiveImageIndex(i)}
+                  className={`aspect-square rounded-xl border-2 overflow-hidden cursor-pointer transition-all duration-300 ${
+                    activeImageIndex === i 
+                      ? 'border-purple-500 shadow-lg shadow-purple-500/30' 
+                      : 'border-white/10 hover:border-white/30'
+                  }`}
+                >
                   <img 
                     src={product.image} 
-                    alt={product.name}
-                    className="w-full h-full object-contain bg-white/5"
+                    className="w-full h-full object-cover" 
+                    alt={`${product.name} view ${i + 1}`}
                   />
-                )}
-                
-                <div className="absolute top-4 right-4 flex flex-col gap-2">
-                  <Button 
-                    size="icon" 
-                    variant="secondary" 
-                    className="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10" 
-                    title="View in AR"
-                    data-testid="ar-button"
-                  >
-                    <Cuboid className="w-5 h-5" />
-                  </Button>
-                  <Button 
-                    size="icon" 
-                    variant="secondary" 
-                    className="rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10" 
-                    title="Try On"
-                    data-testid="tryon-button"
-                  >
-                    <ScanFace className="w-5 h-5" />
-                  </Button>
-                  <Button 
-                    size="icon" 
-                    variant="secondary" 
-                    onClick={() => setShowVideo(!showVideo)}
-                    className={`rounded-full backdrop-blur-xl border transition-all ${
-                      showVideo
-                        ? 'bg-pink-500/30 border-pink-500/50 hover:bg-pink-500/40'
-                        : 'bg-white/10 hover:bg-white/20 border-white/10'
-                    }`}
-                    title="Toggle Video"
-                  >
-                    {showVideo ? <X className="w-5 h-5" /> : <Play className="w-5 h-5" />}
-                  </Button>
                 </div>
-                
-                {product.has3D && (
-                  <div className="absolute bottom-4 left-4">
-                    <Badge className="bg-gradient-to-r from-purple-500/80 to-pink-500/80 backdrop-blur-xl border-none text-white">
-                      <Box className="w-3 h-3 mr-1" /> Interactive 3D Model
-                    </Badge>
-                  </div>
-                )}
-              </div>
-
-              {/* Image Gallery */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="grid grid-cols-4 gap-4"
-              >
-                {[0, 1, 2, 3].map((i) => (
-                  <div 
-                    key={i} 
-                    onClick={() => {
-                      setActiveImageIndex(i);
-                      setShowVideo(false);
-                    }}
-                    className={`aspect-square rounded-xl border-2 overflow-hidden cursor-pointer transition-all duration-300 ${
-                      activeImageIndex === i 
-                        ? 'border-purple-500 shadow-lg shadow-purple-500/30' 
-                        : 'border-white/10 hover:border-white/30'
-                    }`}
-                  >
-                    <img 
-                      src={product.image} 
-                      className="w-full h-full object-cover" 
-                      alt={`${product.name} view ${i + 1}`}
-                    />
-                  </div>
-                ))}
-              </motion.div>
+              ))}
             </motion.div>
           </div>
 
@@ -508,84 +431,8 @@ export default function ProductDetails() {
               <TabsContent value="reviews" className="mt-0 space-y-6">
                 <div className="flex items-center justify-between">
                   <h3 className="text-2xl font-heading font-bold text-white">Customer Reviews</h3>
-                  {userPurchased && !showReviewForm && (
-                    <Button onClick={() => setShowReviewForm(true)} className="bg-gradient-to-r from-purple-500 to-pink-500">Write a Review</Button>
-                  )}
+                  <Button className="bg-gradient-to-r from-purple-500 to-pink-500">Write a Review</Button>
                 </div>
-
-                {/* Review Form */}
-                <AnimatePresence>
-                  {showReviewForm && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4"
-                    >
-                      <h4 className="text-lg font-semibold text-white">Share your review</h4>
-                      
-                      <div>
-                        <label className="text-sm font-medium text-white/60 mb-3 block">Rating</label>
-                        <div className="flex gap-2">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <button
-                              key={star}
-                              onClick={() => setReviewRating(star)}
-                              className="transition-transform hover:scale-110"
-                            >
-                              <Star
-                                className={`w-7 h-7 ${star <= reviewRating ? 'fill-yellow-400 text-yellow-400' : 'text-white/20'}`}
-                              />
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="text-sm font-medium text-white/60 mb-2 block">Your Review</label>
-                        <textarea
-                          value={reviewText}
-                          onChange={(e) => setReviewText(e.target.value)}
-                          placeholder="Share your experience with this product..."
-                          className="w-full bg-white/5 border border-white/10 text-white placeholder:text-white/40 resize-none rounded-lg p-3 focus:outline-none focus:border-purple-500/50"
-                          rows={4}
-                        />
-                      </div>
-
-                      <div className="flex gap-3">
-                        <Button
-                          onClick={() => {
-                            if (reviewText.trim()) {
-                              const newReview = {
-                                id: reviews.length + 1,
-                                author: "You",
-                                rating: reviewRating,
-                                text: reviewText,
-                                date: "just now"
-                              };
-                              setReviews([newReview, ...reviews]);
-                              setReviewText("");
-                              setReviewRating(5);
-                              setShowReviewForm(false);
-                            }
-                          }}
-                          disabled={!reviewText.trim()}
-                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 disabled:opacity-50"
-                        >
-                          Post Review
-                        </Button>
-                        <Button
-                          onClick={() => setShowReviewForm(false)}
-                          variant="outline"
-                          className="border-white/20 text-white hover:bg-white/10"
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
                 <div className="flex items-center gap-8 p-6 rounded-2xl bg-white/5 border border-white/10">
                   <div className="text-center">
                     <div className="text-5xl font-bold text-white">{product.rating}</div>
@@ -610,174 +457,10 @@ export default function ProductDetails() {
                     ))}
                   </div>
                 </div>
-
-                {/* Reviews List */}
-                <div className="space-y-4">
-                  {reviews.map((review) => (
-                    <div key={review.id} className="bg-white/5 border border-white/10 rounded-xl p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <h4 className="font-semibold text-white">{review.author}</h4>
-                          <p className="text-xs text-white/40">{review.date}</p>
-                        </div>
-                        <div className="flex gap-0.5">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-3 h-3 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-white/20'}`}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                      <p className="text-white/70 text-sm">{review.text}</p>
-                    </div>
-                  ))}
-                </div>
               </TabsContent>
             </div>
           </Tabs>
         </motion.div>
-
-        {/* Similar Products Carousel */}
-        {similarProducts.length > 0 && (
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="mt-20"
-          >
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-heading font-bold text-white">Similar Products</h2>
-              <div className="flex gap-2">
-                <Button 
-                  size="icon" 
-                  variant="outline"
-                  className="rounded-full border-white/20 bg-white/5 hover:bg-white/10"
-                  onClick={() => setSimilarCarouselIndex(Math.max(0, similarCarouselIndex - 1))}
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </Button>
-                <Button 
-                  size="icon" 
-                  variant="outline"
-                  className="rounded-full border-white/20 bg-white/5 hover:bg-white/10"
-                  onClick={() => setSimilarCarouselIndex(Math.min(similarProducts.length - 1, similarCarouselIndex + 1))}
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </Button>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {getVisibleSimilar().map((p) => (
-                <Link key={p.id} href={`/product/${p.id}`}>
-                  <motion.div 
-                    whileHover={{ y: -5 }}
-                    className="group cursor-pointer"
-                  >
-                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 group-hover:border-purple-500/30 transition-all duration-300">
-                      <div className="aspect-square overflow-hidden bg-white/10">
-                        <img 
-                          src={p.image} 
-                          alt={p.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                      </div>
-                      <div className="p-4 space-y-2">
-                        <h3 className="font-semibold text-white group-hover:text-purple-400 transition-colors line-clamp-2 text-sm">
-                          {p.name}
-                        </h3>
-                        <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                            ${p.price.toLocaleString()}
-                          </span>
-                          <div className="flex">
-                            {[1,2,3,4,5].map(s => (
-                              <Star key={s} className={`w-3 h-3 ${s <= Math.floor(p.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-white/20'}`} />
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
-
-        {/* Top Products Carousel */}
-        {topProducts.length > 0 && (
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="mt-20"
-          >
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl font-heading font-bold text-white">Bestsellers & Featured</h2>
-              <div className="flex gap-2">
-                <Button 
-                  size="icon" 
-                  variant="outline"
-                  className="rounded-full border-white/20 bg-white/5 hover:bg-white/10"
-                  onClick={() => setTopCarouselIndex(Math.max(0, topCarouselIndex - 1))}
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </Button>
-                <Button 
-                  size="icon" 
-                  variant="outline"
-                  className="rounded-full border-white/20 bg-white/5 hover:bg-white/10"
-                  onClick={() => setTopCarouselIndex(Math.min(topProducts.length - 1, topCarouselIndex + 1))}
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </Button>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {getVisibleTop().map((p) => (
-                <Link key={p.id} href={`/product/${p.id}`}>
-                  <motion.div 
-                    whileHover={{ y: -5 }}
-                    className="group cursor-pointer"
-                  >
-                    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 group-hover:border-purple-500/30 transition-all duration-300">
-                      {(p.isNew || p.isBestseller) && (
-                        <div className="absolute top-4 left-4 z-10">
-                          <Badge className={`${p.isBestseller ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 'bg-gradient-to-r from-cyan-500 to-blue-500'} text-white border-none text-xs`}>
-                            {p.isBestseller ? 'Bestseller' : 'New'}
-                          </Badge>
-                        </div>
-                      )}
-                      <div className="aspect-square overflow-hidden bg-white/10">
-                        <img 
-                          src={p.image} 
-                          alt={p.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                      </div>
-                      <div className="p-4 space-y-2">
-                        <h3 className="font-semibold text-white group-hover:text-purple-400 transition-colors line-clamp-2 text-sm">
-                          {p.name}
-                        </h3>
-                        <div className="flex items-center justify-between">
-                          <span className="text-lg font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                            ${p.price.toLocaleString()}
-                          </span>
-                          <div className="flex">
-                            {[1,2,3,4,5].map(s => (
-                              <Star key={s} className={`w-3 h-3 ${s <= Math.floor(p.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-white/20'}`} />
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </main>
     </div>
   );
