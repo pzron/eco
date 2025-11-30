@@ -212,10 +212,9 @@ export function ProductGrid() {
           viewport={{ once: true }}
           className="mb-8"
         >
-          <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-2">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-white">
             Featured Collection
           </h2>
-          <p className="text-white/60">Explore 272+ premium products across 34 categories</p>
         </motion.div>
 
         {/* Responsive grid - 4 items per line with variations */}
