@@ -1,7 +1,7 @@
 import { categories } from "@/data/products";
 import { motion } from "framer-motion";
 import { 
-  Zap, Shirt, Sparkles, Home, Dumbbell, Gamepad2, Ring, BookOpen, 
+  Zap, Shirt, Sparkles, Home, Dumbbell, Gamepad2, Watch, BookOpen, 
   Puzzle, Car, ShoppingCart, Pill, Sofa, Leaf, PawPrint, Trophy, 
   Music, Palette, Wrench, Paperclip, PencilRuler, Tent, Plane, 
   Footprints, Backpack, Frame, Lightbulb, ChefHat, Wind, Smartphone, 
@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Zap, Shirt, Sparkles, Home, Dumbbell, Gamepad2, Ring, BookOpen,
+  Zap, Shirt, Sparkles, Home, Dumbbell, Gamepad2, Watch, BookOpen,
   Puzzle, Car, ShoppingCart, Pill, Sofa, Leaf, PawPrint, Trophy,
   Music, Palette, Wrench, Paperclip, PencilRuler, Tent, Plane,
   Footprints, Backpack, Frame, Lightbulb, ChefHat, Wind, Smartphone,
@@ -50,7 +50,7 @@ export function CategoriesCarousel() {
                 
                 {/* Icon container with gradient */}
                 <div className={`relative w-16 h-16 md:w-20 md:h-20 rounded-xl bg-gradient-to-br ${category.gradient} shadow-lg shadow-black/30 flex items-center justify-center group-hover:shadow-2xl group-hover:shadow-purple-500/50 transition-all duration-300 border border-white/20`}>
-                  <IconComponent className="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-lg" strokeWidth={1.5} />
+                  <IconComponent className="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-lg" />
                 </div>
                 
                 {/* Category name */}

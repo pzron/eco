@@ -48,7 +48,7 @@ export const categories: Category[] = [
   { name: "Home & Living", slug: "home", icon: "🏠", iconName: "Home", gradient: "from-amber-600 to-orange-500" },
   { name: "Sports & Fitness", slug: "sports", icon: "🏋️", iconName: "Dumbbell", gradient: "from-red-600 to-pink-500" },
   { name: "Gaming", slug: "gaming", icon: "🎮", iconName: "Gamepad2", gradient: "from-violet-600 to-purple-500" },
-  { name: "Jewelry & Watches", slug: "jewelry", icon: "💎", iconName: "Ring", gradient: "from-yellow-600 to-amber-500" },
+  { name: "Jewelry & Watches", slug: "jewelry", icon: "💎", iconName: "Watch", gradient: "from-yellow-600 to-amber-500" },
   { name: "Books & Media", slug: "books", icon: "📚", iconName: "BookOpen", gradient: "from-blue-600 to-indigo-500" },
   { name: "Kids & Toys", slug: "kids", icon: "🧸", iconName: "Puzzle", gradient: "from-green-500 to-emerald-400" },
   { name: "Automotive", slug: "automotive", icon: "🚗", iconName: "Car", gradient: "from-gray-600 to-slate-500" },
