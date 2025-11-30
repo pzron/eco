@@ -63,11 +63,13 @@ export async function createOrderWithCalculations(input: OrderInput) {
       cartItems.map((item) => ({
         productId: item.productId,
         productName: item.product?.name || "",
+        productImage: item.product?.images?.[0] || null,
         quantity: item.quantity,
         price: item.price.toString(),
         total: (item.price * item.quantity).toString(),
-        selectedColor: undefined,
-        selectedSize: undefined,
+        selectedColor: null,
+        selectedSize: null,
+        vendorId: item.product?.vendorId || null,
       }))
     );
 

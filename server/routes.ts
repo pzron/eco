@@ -320,9 +320,6 @@ export async function registerRoutes(
     }
   });
 
-  return httpServer;
-}
-
   // Real-time calculation endpoints
   app.post("/api/cart/calculate", async (req, res) => {
     try {
@@ -385,3 +382,6 @@ export async function registerRoutes(
       database: "connected",
     });
   });
+
+  return httpServer;
+}
