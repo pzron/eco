@@ -188,13 +188,6 @@ function ProductCard({ product, index }: ProductCardProps) {
                 </span>
               )}
             </div>
-
-            {/* Stock status */}
-            <div className="w-full">
-              <p className={`text-xs font-medium ${product.inStock ? 'text-green-400' : 'text-red-400'}`}>
-                {product.inStock ? `${product.stock} in stock` : 'Out of stock'}
-              </p>
-            </div>
           </CardFooter>
         </Card>
       </Link>
