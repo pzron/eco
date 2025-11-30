@@ -7,18 +7,30 @@ import {
   User, Package, Heart, Award, Settings, LogOut, MapPin, CreditCard, Clock,
   ChevronRight, Edit2, Trash2, Plus, Bell, Shield, 
   Mail, Phone, Calendar, Truck, MapPinCheck, RotateCcw,
-  Lock, Check, AlertCircle, CheckCircle, Circle, Key
+  Lock, Check, AlertCircle, CheckCircle, Circle, Key, DollarSign, FileText
 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth";
 import { useState } from "react";
 
 export default function ProfilePage() {
   const [, navigate] = useLocation();
-  const { user, logout, isAuthenticated } = useAuthStore();
+  const { user, logout, isAuthenticated, submitAffiliateApplication, approveAffiliateApplication } = useAuthStore();
   const [activeNav, setActiveNav] = useState("overview");
   const [editMode, setEditMode] = useState(false);
-  const [affiliateStatus, setAffiliateStatus] = useState<"none" | "pending" | "approved">("none");
   const [showAffiliateModal, setShowAffiliateModal] = useState(false);
+  const [affiliateFormData, setAffiliateFormData] = useState({
+    phone: "",
+    address: "",
+    city: "",
+    country: "",
+    postalCode: "",
+    bankAccount: "",
+    taxId: "",
+    websiteUrl: "",
+    socialMedia: "",
+    monthlyVisitors: "",
+    primaryAudience: "",
+  });
 
   if (!isAuthenticated) {
     return (
@@ -339,43 +351,112 @@ export default function ProfilePage() {
                   <h2 className="text-2xl font-bold text-white mb-6">Affiliate Program</h2>
                   
                   <div className="space-y-6">
-                    {affiliateStatus === "none" ? (
+                    {user?.role === "customer" && !user?.affiliateApplied ? (
                       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-8">
                         <Award className="w-16 h-16 text-primary mx-auto mb-4 opacity-50" />
                         <p className="text-muted-foreground mb-6 max-w-md">Join our affiliate program and start earning commissions on every referral.</p>
-                        <Button onClick={() => setShowAffiliateModal(true)} className="bg-primary hover:bg-primary/90 px-8">Apply Now</Button>
+                        <Button onClick={() => setShowAffiliateModal(true)} className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 px-8">Apply Now</Button>
                       </motion.div>
-                    ) : affiliateStatus === "pending" ? (
+                    ) : user?.affiliateApplied && user?.role === "customer" ? (
                       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-6 bg-yellow-500/10 border border-yellow-500/30 rounded-lg text-center">
                         <AlertCircle className="w-12 h-12 text-yellow-400 mx-auto mb-3" />
                         <p className="text-yellow-200 font-semibold mb-2">Application Under Review</p>
                         <p className="text-yellow-100/70 text-sm">We're reviewing your application. You'll be notified soon.</p>
+                        <div className="mt-4 p-3 bg-yellow-500/5 rounded-lg text-xs text-yellow-200">
+                          💡 <strong>Admin Tip:</strong> Click "Approve Application" button below to auto-switch role
+                        </div>
+                        <motion.button whileHover={{ scale: 1.02 }} onClick={approveAffiliateApplication} className="w-full mt-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-white font-semibold text-sm transition-all">
+                          Approve Application (Simulate Admin)
+                        </motion.button>
                       </motion.div>
-                    ) : (
-                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-6 bg-green-500/10 border border-green-500/30 rounded-lg text-center">
-                        <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-3" />
-                        <p className="text-green-200 font-semibold mb-2">Approved</p>
-                        <p className="text-green-100/70 text-sm">Congratulations! You're now an affiliate partner.</p>
+                    ) : user?.role === "affiliate" ? (
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+                        <div className="p-6 bg-green-500/10 border border-green-500/30 rounded-lg text-center">
+                          <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-3" />
+                          <p className="text-green-200 font-semibold mb-2">Approved ✓</p>
+                          <p className="text-green-100/70 text-sm">Congratulations! You're now an affiliate partner.</p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                            <DollarSign className="w-5 h-5 text-primary mb-2" />
+                            <p className="text-white/70 text-xs">Commission Rate</p>
+                            <p className="text-white font-bold text-lg">15%</p>
+                          </div>
+                          <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+                            <FileText className="w-5 h-5 text-primary mb-2" />
+                            <p className="text-white/70 text-xs">Earnings</p>
+                            <p className="text-white font-bold text-lg">$0.00</p>
+                          </div>
+                        </div>
+                        <Button className="w-full bg-primary hover:bg-primary/90">Go to Affiliate Dashboard</Button>
                       </motion.div>
-                    )}
-
-                    {affiliateStatus !== "none" && (
-                      <motion.button whileHover={{ scale: 1.02 }} onClick={() => setAffiliateStatus("none")} className="w-full py-3 border border-white/20 rounded-lg text-white hover:bg-white/5 transition-all font-semibold text-sm">
-                        Change Application Status
-                      </motion.button>
-                    )}
+                    ) : null}
                   </div>
                 </div>
 
-                {showAffiliateModal && (
+                {showAffiliateModal && !user?.affiliateApplied && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-gradient-to-br from-white/10 via-white/5 to-transparent border border-white/10 rounded-2xl backdrop-blur-xl p-6">
-                    <h3 className="text-xl font-bold text-white mb-4">Affiliate Application Form</h3>
-                    <div className="space-y-3">
-                      <div><label className="text-sm text-white block mb-1">Why do you want to join?</label>
-                        <textarea className="w-full bg-black/40 border border-white/20 rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:border-primary" rows={3} /></div>
-                      <div className="flex gap-2">
-                        <Button onClick={() => { setShowAffiliateModal(false); setAffiliateStatus("pending"); }} className="flex-1 bg-primary hover:bg-primary/90">Submit Application</Button>
-                        <Button onClick={() => setShowAffiliateModal(false)} variant="outline" className="flex-1">Cancel</Button>
+                    <h3 className="text-xl font-bold text-white mb-6">Affiliate Application Form</h3>
+                    <div className="space-y-4 max-h-[600px] overflow-y-auto">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-xs text-white/70 block mb-1.5 font-semibold">Phone Number *</label>
+                          <input type="tel" value={affiliateFormData.phone} onChange={(e) => setAffiliateFormData({...affiliateFormData, phone: e.target.value})} placeholder="+1 (555) 000-0000" className="w-full bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary" />
+                        </div>
+                        <div>
+                          <label className="text-xs text-white/70 block mb-1.5 font-semibold">Country *</label>
+                          <input type="text" value={affiliateFormData.country} onChange={(e) => setAffiliateFormData({...affiliateFormData, country: e.target.value})} placeholder="United States" className="w-full bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary" />
+                        </div>
+                        <div>
+                          <label className="text-xs text-white/70 block mb-1.5 font-semibold">City *</label>
+                          <input type="text" value={affiliateFormData.city} onChange={(e) => setAffiliateFormData({...affiliateFormData, city: e.target.value})} placeholder="New York" className="w-full bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary" />
+                        </div>
+                        <div>
+                          <label className="text-xs text-white/70 block mb-1.5 font-semibold">Postal Code *</label>
+                          <input type="text" value={affiliateFormData.postalCode} onChange={(e) => setAffiliateFormData({...affiliateFormData, postalCode: e.target.value})} placeholder="10001" className="w-full bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary" />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-xs text-white/70 block mb-1.5 font-semibold">Street Address *</label>
+                        <input type="text" value={affiliateFormData.address} onChange={(e) => setAffiliateFormData({...affiliateFormData, address: e.target.value})} placeholder="123 Main Street" className="w-full bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary" />
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-xs text-white/70 block mb-1.5 font-semibold">Tax ID *</label>
+                          <input type="text" value={affiliateFormData.taxId} onChange={(e) => setAffiliateFormData({...affiliateFormData, taxId: e.target.value})} placeholder="XX-XXXXXXX" className="w-full bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary" />
+                        </div>
+                        <div>
+                          <label className="text-xs text-white/70 block mb-1.5 font-semibold">Bank Account *</label>
+                          <input type="text" value={affiliateFormData.bankAccount} onChange={(e) => setAffiliateFormData({...affiliateFormData, bankAccount: e.target.value})} placeholder="IBAN or Account Number" className="w-full bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary" />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-xs text-white/70 block mb-1.5 font-semibold">Website/Blog URL</label>
+                        <input type="url" value={affiliateFormData.websiteUrl} onChange={(e) => setAffiliateFormData({...affiliateFormData, websiteUrl: e.target.value})} placeholder="https://yourwebsite.com" className="w-full bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary" />
+                      </div>
+
+                      <div>
+                        <label className="text-xs text-white/70 block mb-1.5 font-semibold">Social Media Handles</label>
+                        <input type="text" value={affiliateFormData.socialMedia} onChange={(e) => setAffiliateFormData({...affiliateFormData, socialMedia: e.target.value})} placeholder="@yourhandle, @instagram, etc" className="w-full bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary" />
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-xs text-white/70 block mb-1.5 font-semibold">Monthly Visitors</label>
+                          <input type="text" value={affiliateFormData.monthlyVisitors} onChange={(e) => setAffiliateFormData({...affiliateFormData, monthlyVisitors: e.target.value})} placeholder="10,000" className="w-full bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary" />
+                        </div>
+                        <div>
+                          <label className="text-xs text-white/70 block mb-1.5 font-semibold">Primary Audience</label>
+                          <input type="text" value={affiliateFormData.primaryAudience} onChange={(e) => setAffiliateFormData({...affiliateFormData, primaryAudience: e.target.value})} placeholder="Tech enthusiasts, gamers, etc" className="w-full bg-black/40 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary" />
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2 pt-2">
+                        <Button onClick={() => { submitAffiliateApplication(affiliateFormData); setShowAffiliateModal(false); }} className="flex-1 bg-gradient-to-r from-primary to-secondary hover:opacity-90">Submit Application</Button>
+                        <Button onClick={() => setShowAffiliateModal(false)} variant="outline" className="flex-1 border-white/20 text-white hover:bg-white/5">Cancel</Button>
                       </div>
                     </div>
                   </motion.div>
