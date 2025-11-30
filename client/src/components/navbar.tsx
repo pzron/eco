@@ -95,24 +95,24 @@ export function Navbar() {
       }`}
       data-testid="navbar"
     >
-      <div className="container mx-auto px-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 cursor-pointer group" data-testid="logo-link">
+      <div className="container mx-auto px-3 md:px-4 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2 cursor-pointer group flex-shrink-0" data-testid="logo-link">
           <motion.div 
             className="relative"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400 }}
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div className="w-9 md:w-10 h-9 md:h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30 flex-shrink-0">
+              <Sparkles className="w-4 md:w-5 h-4 md:h-5 text-white" />
             </div>
             <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 blur-lg opacity-50 group-hover:opacity-70 transition-opacity" />
           </motion.div>
-          <span className="font-heading font-bold text-xl tracking-wider text-white">
+          <span className="font-heading font-bold text-lg md:text-xl tracking-wider text-white hidden sm:inline">
             Nex<span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Commerce</span>
           </span>
         </Link>
 
-        <div className="hidden lg:flex items-center gap-8">
+        <div className="hidden xl:flex items-center gap-6 md:gap-8 ml-8">
           {[
             { href: "/", label: "Home" },
             { href: "/products", label: "Products" },
@@ -122,7 +122,7 @@ export function Navbar() {
             <Link 
               key={href}
               href={href}
-              className="relative text-sm font-medium text-white/70 hover:text-white transition-colors group"
+              className="relative text-xs md:text-sm font-medium text-white/70 hover:text-white transition-colors group"
               data-testid={`nav-${label.toLowerCase()}`}
             >
               {label}
@@ -131,13 +131,13 @@ export function Navbar() {
           ))}
         </div>
 
-        <div className="flex items-center gap-3">
-          <form onSubmit={handleSearch} className="hidden md:flex relative">
+        <div className="flex items-center gap-1.5 md:gap-3 ml-auto flex-shrink-0">
+          <form onSubmit={handleSearch} className="hidden sm:flex relative">
             <Input 
-              placeholder="Search products..." 
+              placeholder="Search..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className={`w-52 lg:w-64 bg-white/5 border-white/10 rounded-full pl-4 pr-20 focus:bg-white/10 focus:border-purple-500/50 transition-all text-sm ${isListening ? 'border-purple-500 bg-purple-500/10' : ''}`}
+              className={`w-36 md:w-52 lg:w-64 bg-white/5 border-white/10 rounded-full pl-3 md:pl-4 pr-16 md:pr-20 focus:bg-white/10 focus:border-purple-500/50 transition-all text-xs md:text-sm ${isListening ? 'border-purple-500 bg-purple-500/10' : ''}`}
               data-testid="search-input"
             />
             <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
@@ -165,28 +165,28 @@ export function Navbar() {
             <Button 
               variant="ghost" 
               size="icon" 
-              className="hidden sm:flex text-white/70 hover:text-white hover:bg-white/10 rounded-full relative"
+              className="hidden sm:flex h-9 w-9 md:h-10 md:w-10 text-white/70 hover:text-white hover:bg-white/10 rounded-full relative"
               data-testid="wishlist-button"
             >
-              <Heart className="w-5 h-5" />
+              <Heart className="w-4 md:w-5 h-4 md:h-5" />
             </Button>
           </Link>
 
           <Button 
             variant="ghost" 
             size="icon" 
-            className="text-white/70 hover:text-white hover:bg-white/10 rounded-full relative"
+            className="h-9 w-9 md:h-10 md:w-10 text-white/70 hover:text-white hover:bg-white/10 rounded-full relative"
             onClick={() => setIsOpen(true)}
             data-testid="cart-button"
           >
-            <ShoppingCart className="w-5 h-5" />
+            <ShoppingCart className="w-4 md:w-5 h-4 md:h-5" />
             <AnimatePresence>
               {itemCount > 0 && (
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   exit={{ scale: 0 }}
-                  className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full text-xs font-bold text-white flex items-center justify-center shadow-lg"
+                  className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full text-xs font-bold text-white flex items-center justify-center shadow-lg"
                 >
                   {itemCount > 9 ? "9+" : itemCount}
                 </motion.span>
@@ -199,24 +199,24 @@ export function Navbar() {
               <Button 
                 variant="ghost" 
                 size="icon" 
-                className="hidden sm:flex text-white/70 hover:text-white hover:bg-white/10 rounded-full"
+                className="h-9 w-9 md:h-10 md:w-10 text-white/70 hover:text-white hover:bg-white/10 rounded-full"
                 data-testid="profile-button"
               >
-                <User className="w-5 h-5" />
+                <User className="w-4 md:w-5 h-4 md:h-5" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end" 
-              className="w-48 bg-[#0f0f15]/95 backdrop-blur-xl border-white/10"
+              className="w-40 md:w-48 bg-[#0f0f15]/95 backdrop-blur-xl border-white/10"
             >
               <DropdownMenuItem asChild className="focus:bg-white/10 cursor-pointer">
-                <Link href="/signup" className="flex items-center gap-2 text-white">
+                <Link href="/signup" className="flex items-center gap-2 text-white text-sm">
                   <LogIn className="w-4 h-4" />
                   Login
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="focus:bg-white/10 cursor-pointer">
-                <Link href="/signup" className="flex items-center gap-2 text-white">
+                <Link href="/signup" className="flex items-center gap-2 text-white text-sm">
                   <UserPlus className="w-4 h-4" />
                   Register
                 </Link>
@@ -226,7 +226,7 @@ export function Navbar() {
           
           <Link href="/signup">
             <Button 
-              className="hidden md:flex bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full px-6 font-medium shadow-lg shadow-purple-500/25 transition-all hover:shadow-purple-500/40 hover:scale-105"
+              className="hidden md:flex h-9 md:h-10 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full px-4 md:px-6 text-sm font-medium shadow-lg shadow-purple-500/25 transition-all hover:shadow-purple-500/40 hover:scale-105"
               data-testid="signin-button"
             >
               Sign In
@@ -244,14 +244,14 @@ export function Navbar() {
                 <Menu className="w-6 h-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="bg-[#0a0a0f]/95 backdrop-blur-xl border-l border-white/10 w-80">
+            <SheetContent side="right" className="bg-[#0a0a0f]/95 backdrop-blur-xl border-l border-white/10 w-72 md:w-80">
               <div className="flex flex-col gap-6 mt-8">
                 <form onSubmit={handleSearch} className="relative">
                   <Input 
-                    placeholder="Search products..." 
+                    placeholder="Search..." 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className={`w-full bg-white/5 border-white/10 rounded-full pl-4 pr-16 ${isListening ? 'border-purple-500 bg-purple-500/10' : ''}`}
+                    className={`w-full bg-white/5 border-white/10 rounded-full pl-4 pr-16 text-sm ${isListening ? 'border-purple-500 bg-purple-500/10' : ''}`}
                   />
                   <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                     <Button
@@ -279,7 +279,7 @@ export function Navbar() {
                   <Link 
                     key={href}
                     href={href}
-                    className="text-lg font-medium text-white/70 hover:text-white transition-colors flex items-center gap-3"
+                    className="text-base font-medium text-white/70 hover:text-white transition-colors flex items-center gap-3"
                   >
                     {label}
                   </Link>
