@@ -29,17 +29,17 @@ const categoryData = [
 ];
 
 const recentOrders = [
-  { id: "ORD-7291", customer: "Alex Morgan", amount: "$1,250.00", status: "completed", product: "MacBook Pro" },
-  { id: "ORD-7290", customer: "Sarah Chen", amount: "$890.00", status: "processing", product: "iPhone 15 Pro" },
-  { id: "ORD-7289", customer: "Mike Johnson", amount: "$340.00", status: "pending", product: "AirPods Max" },
-  { id: "ORD-7288", customer: "Emily Davis", amount: "$2,100.00", status: "completed", product: "Gaming Setup" },
+  { id: "ORD-7291", customer: "Alex Morgan", amount: "৳1,250.00", status: "completed", product: "MacBook Pro" },
+  { id: "ORD-7290", customer: "Sarah Chen", amount: "৳890.00", status: "processing", product: "iPhone 15 Pro" },
+  { id: "ORD-7289", customer: "Mike Johnson", amount: "৳340.00", status: "pending", product: "AirPods Max" },
+  { id: "ORD-7288", customer: "Emily Davis", amount: "৳2,100.00", status: "completed", product: "Gaming Setup" },
 ];
 
 const topProducts = [
-  { name: "iPhone 15 Pro Max", sales: 1247, revenue: "$1.2M", trend: "+23%" },
-  { name: "MacBook Pro M3", sales: 892, revenue: "$1.6M", trend: "+18%" },
-  { name: "AirPods Pro 2", sales: 2341, revenue: "$560K", trend: "+31%" },
-  { name: "Apple Watch Ultra", sales: 567, revenue: "$450K", trend: "+12%" },
+  { name: "iPhone 15 Pro Max", sales: 1247, revenue: "৳1.2M", trend: "+23%" },
+  { name: "MacBook Pro M3", sales: 892, revenue: "৳1.6M", trend: "+18%" },
+  { name: "AirPods Pro 2", sales: 2341, revenue: "৳560K", trend: "+31%" },
+  { name: "Apple Watch Ultra", sales: 567, revenue: "৳450K", trend: "+12%" },
 ];
 
 function HolographicCard({ 
@@ -245,7 +245,7 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <KPICard 
             title="Total Revenue" 
-            value="$128,430" 
+            value="৳128,430" 
             change="+12.5%" 
             icon={DollarSign} 
             color="purple"
@@ -336,7 +336,7 @@ export default function AdminDashboard() {
                         fontSize={12} 
                         tickLine={false} 
                         axisLine={false} 
-                        tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                        tickFormatter={(value) => `৳${(value / 1000).toFixed(0)}k`}
                       />
                       <Tooltip 
                         contentStyle={{ 

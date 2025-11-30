@@ -31,17 +31,17 @@ const productPerformance = [
 ];
 
 const recentOrders = [
-  { id: "#ORD-9382", item: "iPhone 15 Pro Max", customer: "Alex Morgan", status: "Processing", amount: "$1,299", time: "2 mins ago", image: "📱" },
-  { id: "#ORD-9381", item: "Sony WH-1000XM5", customer: "Sarah Chen", status: "Shipped", amount: "$348", time: "1 hour ago", image: "🎧" },
-  { id: "#ORD-9380", item: "MacBook Pro 16", customer: "Mike Johnson", status: "Delivered", amount: "$2,499", time: "3 hours ago", image: "💻" },
-  { id: "#ORD-9379", item: "Apple Watch Ultra", customer: "Emily Davis", status: "Processing", amount: "$799", time: "5 hours ago", image: "⌚" },
+  { id: "#ORD-9382", item: "iPhone 15 Pro Max", customer: "Alex Morgan", status: "Processing", amount: "৳1,299", time: "2 mins ago", image: "📱" },
+  { id: "#ORD-9381", item: "Sony WH-1000XM5", customer: "Sarah Chen", status: "Shipped", amount: "৳348", time: "1 hour ago", image: "🎧" },
+  { id: "#ORD-9380", item: "MacBook Pro 16", customer: "Mike Johnson", status: "Delivered", amount: "৳2,499", time: "3 hours ago", image: "💻" },
+  { id: "#ORD-9379", item: "Apple Watch Ultra", customer: "Emily Davis", status: "Processing", amount: "৳799", time: "5 hours ago", image: "⌚" },
 ];
 
 const topProducts = [
-  { name: "iPhone 15 Pro Max", stock: 24, status: "healthy", sales: 156, revenue: "$202K" },
-  { name: "MacBook Pro 16\"", stock: 8, status: "low", sales: 42, revenue: "$104K" },
-  { name: "AirPods Pro 2", stock: 156, status: "healthy", sales: 234, revenue: "$58K" },
-  { name: "Sony WH-1000XM5", stock: 3, status: "critical", sales: 89, revenue: "$31K" },
+  { name: "iPhone 15 Pro Max", stock: 24, status: "healthy", sales: 156, revenue: "৳202K" },
+  { name: "MacBook Pro 16\"", stock: 8, status: "low", sales: 42, revenue: "৳104K" },
+  { name: "AirPods Pro 2", stock: 156, status: "healthy", sales: 234, revenue: "৳58K" },
+  { name: "Sony WH-1000XM5", stock: 3, status: "critical", sales: 89, revenue: "৳31K" },
 ];
 
 function HolographicCard({ 
@@ -205,7 +205,7 @@ export default function VendorDashboard() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <VendorKPI 
             title="Total Revenue" 
-            value="$48,320" 
+            value="৳48,320" 
             change="+15.3%" 
             icon={DollarSign} 
             color="purple"
@@ -286,7 +286,7 @@ export default function VendorDashboard() {
                         fontSize={12} 
                         tickLine={false} 
                         axisLine={false} 
-                        tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                        tickFormatter={(value) => `৳${(value / 1000).toFixed(0)}k`}
                       />
                       <Tooltip 
                         contentStyle={{ 
@@ -350,7 +350,7 @@ export default function VendorDashboard() {
                           border: '1px solid rgba(255,255,255,0.1)', 
                           borderRadius: '8px' 
                         }}
-                        formatter={(value) => [`$${value}`, 'Sales']}
+                        formatter={(value) => [`৳${value}`, 'Sales']}
                       />
                       <Bar dataKey="sales" radius={[0, 4, 4, 0]}>
                         {productPerformance.map((entry, index) => (

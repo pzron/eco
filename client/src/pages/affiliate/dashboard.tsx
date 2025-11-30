@@ -23,17 +23,17 @@ const earningsData = [
 ];
 
 const activeCampaigns = [
-  { name: "Summer Tech Sale", commission: "15%", clicks: 1240, conversions: 89, earnings: "$450", status: "active", trend: "+23%" },
-  { name: "iPhone 15 Pro Launch", commission: "10%", clicks: 892, conversions: 156, earnings: "$890", status: "active", trend: "+45%" },
-  { name: "Gaming Week Promo", commission: "12%", clicks: 450, conversions: 34, earnings: "$120", status: "active", trend: "+12%" },
-  { name: "Black Friday Early", commission: "20%", clicks: 2100, conversions: 234, earnings: "$1,240", status: "featured", trend: "+67%" },
+  { name: "Summer Tech Sale", commission: "15%", clicks: 1240, conversions: 89, earnings: "৳450", status: "active", trend: "+23%" },
+  { name: "iPhone 15 Pro Launch", commission: "10%", clicks: 892, conversions: 156, earnings: "৳890", status: "active", trend: "+45%" },
+  { name: "Gaming Week Promo", commission: "12%", clicks: 450, conversions: 34, earnings: "৳120", status: "active", trend: "+12%" },
+  { name: "Black Friday Early", commission: "20%", clicks: 2100, conversions: 234, earnings: "৳1,240", status: "featured", trend: "+67%" },
 ];
 
 const leaderboard = [
-  { rank: 1, name: "CryptoKing", avatar: "👑", earnings: "$45,230", badge: "diamond" },
-  { rank: 2, name: "TechGuru", avatar: "🚀", earnings: "$38,450", badge: "platinum" },
-  { rank: 3, name: "InfluencerPro", avatar: "⭐", earnings: "$29,120", badge: "gold" },
-  { rank: 4, name: "You", avatar: "🎯", earnings: "$12,450", badge: "gold", isYou: true },
+  { rank: 1, name: "CryptoKing", avatar: "👑", earnings: "৳45,230", badge: "diamond" },
+  { rank: 2, name: "TechGuru", avatar: "🚀", earnings: "৳38,450", badge: "platinum" },
+  { rank: 3, name: "InfluencerPro", avatar: "⭐", earnings: "৳29,120", badge: "gold" },
+  { rank: 4, name: "You", avatar: "🎯", earnings: "৳12,450", badge: "gold", isYou: true },
 ];
 
 const rewards = [
@@ -238,7 +238,7 @@ export default function AffiliateDashboard() {
               </div>
               <div className="w-px bg-white/10" />
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-400">$12.4K</div>
+                <div className="text-2xl font-bold text-green-400">৳12.4K</div>
                 <div className="text-xs text-white/60">Earnings</div>
               </div>
             </div>
@@ -248,7 +248,7 @@ export default function AffiliateDashboard() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <AffiliateKPI 
             title="Total Earnings" 
-            value="$12,450" 
+            value="৳12,450" 
             change="+24.5%" 
             icon={DollarSign} 
             color="green"
@@ -326,7 +326,7 @@ export default function AffiliateDashboard() {
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
                       <XAxis dataKey="name" stroke="rgba(255,255,255,0.3)" fontSize={12} tickLine={false} axisLine={false} />
-                      <YAxis stroke="rgba(255,255,255,0.3)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `$${v}`} />
+                      <YAxis stroke="rgba(255,255,255,0.3)" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(v) => `৳${v}`} />
                       <Tooltip 
                         contentStyle={{ 
                           backgroundColor: 'rgba(10, 10, 15, 0.95)', 

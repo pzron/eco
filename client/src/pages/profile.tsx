@@ -60,9 +60,9 @@ export default function ProfilePage() {
   ];
 
   const orders = [
-    { id: "ORD-2024-001", date: "Today", status: "In Transit", total: "$2,053.76", items: 2, shipping: "on_way", location: "NYC Distribution Center", return_eligible: true },
-    { id: "ORD-2024-002", date: "Nov 28, 2024", status: "Delivered", total: "$499.99", items: 1, shipping: "delivered", location: "Delivered to Home", return_eligible: false },
-    { id: "ORD-2024-003", date: "Nov 20, 2024", status: "Delivered", total: "$149.99", items: 1, shipping: "delivered", location: "Delivered to Home", return_eligible: false },
+    { id: "ORD-2024-001", date: "Today", status: "In Transit", total: "৳2,053.76", items: 2, shipping: "on_way", location: "NYC Distribution Center", return_eligible: true },
+    { id: "ORD-2024-002", date: "Nov 28, 2024", status: "Delivered", total: "৳499.99", items: 1, shipping: "delivered", location: "Delivered to Home", return_eligible: false },
+    { id: "ORD-2024-003", date: "Nov 20, 2024", status: "Delivered", total: "৳149.99", items: 1, shipping: "delivered", location: "Delivered to Home", return_eligible: false },
   ];
 
   const trackingDetails = [
@@ -83,9 +83,9 @@ export default function ProfilePage() {
 
 
   const wishlistItems = [
-    { name: "PlayStation 5 Pro", price: "$799.99", image: "🎮" },
-    { name: "DJI Mini 4 Pro", price: "$459.00", image: "🚁" },
-    { name: "Sony A6700 Camera", price: "$1,398.00", image: "📷" },
+    { name: "PlayStation 5 Pro", price: "৳799.99", image: "🎮" },
+    { name: "DJI Mini 4 Pro", price: "৳459.00", image: "🚁" },
+    { name: "Sony A6700 Camera", price: "৳1,398.00", image: "📷" },
   ];
 
   const addresses = [
