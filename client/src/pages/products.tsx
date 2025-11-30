@@ -2,7 +2,7 @@ import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { categories, products } from "@/data/products";
-import { Search, Mic, MicOff, Grid, List, Star, ShoppingCart, Heart, X, Menu } from "lucide-react";
+import { Search, Mic, MicOff, Grid, List, Star, ShoppingCart, Heart, X, Menu, ChevronLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Link, useLocation, useSearch } from "wouter";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -138,49 +138,100 @@ export default function ProductsPage() {
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-white">
       <Navbar />
       
-      <main className="pt-24 pb-20">
+      <main className="pt-20 pb-20">
         {/* Header Section */}
         <div className="container mx-auto px-4 mb-8">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1">
-              <motion.h1 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-4xl md:text-5xl font-heading font-bold text-white mb-3"
-              >
-                All Products
-              </motion.h1>
-              <motion.p 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-muted-foreground"
-              >
-                Discover our complete collection of 90+ products
-              </motion.p>
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6"
+          >
+            <h1 className="text-4xl md:text-5xl font-heading font-bold text-white mb-2">All Products</h1>
+            <p className="text-muted-foreground text-sm md:text-base">Discover our complete collection of 90+ products</p>
+          </motion.div>
+
+          {/* Search & Toolbar - Mobile First */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col gap-4"
+          >
+            {/* Search Bar */}
+            <form onSubmit={handleSearch} className="w-full">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input 
+                  placeholder="Search products..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={`w-full pl-10 pr-12 bg-white/5 border-white/10 rounded-full focus:bg-white/10 transition-all ${isListening ? 'border-purple-500 bg-purple-500/10' : ''}`}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className={`absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 rounded-full ${isListening ? 'text-purple-400 bg-purple-500/20' : 'text-white/40 hover:text-white hover:bg-white/10'}`}
+                  onClick={isListening ? stopVoiceSearch : startVoiceSearch}
+                >
+                  {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
+                </Button>
+              </div>
+            </form>
+
+            {/* Controls Bar */}
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div className="text-sm text-muted-foreground">
+                <span className="text-white font-semibold">{sortedProducts.length}</span> products
+              </div>
+              
+              <div className="flex items-center gap-3 flex-wrap">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-white hover:bg-white/10 cursor-pointer transition-all"
+                >
+                  <option value="featured">Featured</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Highest Rated</option>
+                </select>
+
+                <div className="flex items-center gap-2 border border-white/10 rounded-lg p-1 bg-white/5">
+                  <Button
+                    size="icon"
+                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                    className={`h-8 w-8 rounded-md ${viewMode === 'grid' ? 'bg-primary text-white' : 'text-white/50 hover:text-white'}`}
+                    onClick={() => setViewMode('grid')}
+                  >
+                    <Grid className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant={viewMode === 'list' ? 'default' : 'ghost'}
+                    className={`h-8 w-8 rounded-md ${viewMode === 'list' ? 'bg-primary text-white' : 'text-white/50 hover:text-white'}`}
+                    onClick={() => setViewMode('list')}
+                  >
+                    <List className="w-4 h-4" />
+                  </Button>
+                </div>
+
+                <Button
+                  onClick={() => setShowSidebar(!showSidebar)}
+                  variant="outline"
+                  size="sm"
+                  className="lg:hidden gap-2 border-white/20 bg-white/5 hover:bg-white/10"
+                >
+                  <Menu className="w-4 h-4" />
+                  <span className="text-xs">Filters</span>
+                </Button>
+              </div>
             </div>
-            
-            {/* Filter Toggle Button - Desktop */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="flex-shrink-0"
-            >
-              <Button
-                onClick={() => setShowSidebar(!showSidebar)}
-                variant="outline"
-                size="lg"
-                className="hidden lg:flex gap-2 border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/40 transition-all"
-              >
-                <Menu className="w-5 h-5" />
-                <span className="text-sm font-medium">{showSidebar ? 'Hide' : 'Show'} Filters</span>
-              </Button>
-            </motion.div>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="flex gap-6">
-          {/* Left Sidebar - Filters */}
+        {/* Main Content */}
+        <div className="container mx-auto px-4 flex gap-6">
+          {/* Sidebar */}
           <AnimatePresence>
             {showSidebar && (
               <motion.div
@@ -188,33 +239,38 @@ export default function ProductsPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -300 }}
                 transition={{ duration: 0.3 }}
-                className="fixed lg:relative inset-0 lg:inset-auto z-40 lg:z-0 w-80 lg:w-64 bg-background lg:bg-transparent"
+                className="fixed lg:relative inset-0 lg:inset-auto z-50 lg:z-0 w-full lg:w-72 bg-background lg:bg-transparent"
               >
                 {/* Mobile Overlay */}
                 <div 
-                  className="fixed inset-0 bg-black/50 lg:hidden z-10"
+                  className="fixed inset-0 bg-black/60 lg:hidden z-10"
                   onClick={() => setShowSidebar(false)}
                 />
                 
                 {/* Filters Panel */}
-                <div className="relative z-20 h-screen lg:h-auto overflow-y-auto lg:overflow-visible p-6 lg:p-0 rounded-2xl lg:rounded-none bg-white/5 lg:bg-transparent border lg:border-none border-white/10 lg:border-white/10 backdrop-blur-md lg:backdrop-blur-none sticky top-0 lg:top-24">
-                  {/* Mobile Close Button */}
-                  <Button
-                    onClick={() => setShowSidebar(false)}
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-4 right-4 lg:hidden"
-                  >
-                    <X className="w-5 h-5" />
-                  </Button>
-
-                  <div className="space-y-6 mt-8 lg:mt-0">
+                <motion.div 
+                  initial={{ x: -300 }}
+                  animate={{ x: 0 }}
+                  className="relative z-20 h-full lg:h-auto w-80 lg:w-full overflow-y-auto lg:overflow-visible p-6 lg:p-0 rounded-r-3xl lg:rounded-none bg-white/5 border-r lg:border-none border-white/10 lg:border-white/10 backdrop-blur-md lg:backdrop-blur-none sticky top-0 lg:top-24"
+                >
+                  {/* Header with Close Button */}
+                  <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-bold text-white">Filters</h3>
+                    <Button
+                      onClick={() => setShowSidebar(false)}
+                      variant="ghost"
+                      size="icon"
+                      className="lg:hidden h-8 w-8 rounded-full hover:bg-white/10"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </Button>
+                  </div>
 
+                  <div className="space-y-6">
                     {/* Category Filter */}
                     <div>
-                      <h4 className="font-semibold text-white mb-3 text-sm">Category</h4>
-                      <div className="space-y-2 max-h-64 overflow-y-auto">
+                      <h4 className="font-semibold text-white mb-3 text-sm uppercase tracking-wide">Category</h4>
+                      <div className="space-y-2 max-h-96 overflow-y-auto pr-2">
                         <Button
                           variant={selectedCategory === "all" ? "default" : "ghost"}
                           className={`w-full justify-start text-sm font-medium ${
@@ -247,7 +303,7 @@ export default function ProductsPage() {
 
                     {/* Price Range */}
                     <div className="border-t border-white/10 pt-4">
-                      <h4 className="font-semibold text-white mb-4 text-sm">Price Range</h4>
+                      <h4 className="font-semibold text-white mb-4 text-sm uppercase tracking-wide">Price Range</h4>
                       <div className="space-y-4">
                         <Slider
                           value={priceRange}
@@ -288,7 +344,7 @@ export default function ProductsPage() {
 
                     {/* Rating Filter */}
                     <div className="border-t border-white/10 pt-4">
-                      <h4 className="font-semibold text-white mb-3 text-sm">Rating</h4>
+                      <h4 className="font-semibold text-white mb-3 text-sm uppercase tracking-wide">Rating</h4>
                       <div className="space-y-2">
                         <Button
                           variant={minRating === 0 ? "default" : "ghost"}
@@ -304,7 +360,7 @@ export default function ProductsPage() {
                             className={`w-full justify-start text-sm font-medium ${minRating === rating ? "bg-gradient-to-r from-primary to-secondary text-white" : "text-white/60 hover:text-white hover:bg-white/10"}`}
                             onClick={() => setMinRating(rating)}
                           >
-                            <div className="flex items-center gap-1.5">
+                            <div className="flex items-center gap-1">
                               {[...Array(rating)].map((_, i) => (
                                 <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
                               ))}
@@ -333,97 +389,13 @@ export default function ProductsPage() {
                       </Button>
                     )}
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* Right Content - Products */}
-          <div className="flex-1 container mx-auto px-4">
-            {/* Search & Toolbar */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-8"
-            >
-              <form onSubmit={handleSearch} className="flex-1 max-w-md w-full">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input 
-                    placeholder="Search products..." 
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className={`pl-10 pr-12 bg-white/5 border-white/10 rounded-full focus:bg-white/10 transition-all ${isListening ? 'border-purple-500 bg-purple-500/10' : ''}`}
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className={`absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 rounded-full ${isListening ? 'text-purple-400 bg-purple-500/20' : 'text-white/40 hover:text-white hover:bg-white/10'}`}
-                    onClick={isListening ? stopVoiceSearch : startVoiceSearch}
-                  >
-                    {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
-                  </Button>
-                </div>
-              </form>
-
-              {/* Mobile Filter Toggle */}
-              <Button
-                onClick={() => setShowSidebar(!showSidebar)}
-                variant="outline"
-                size="sm"
-                className="lg:hidden gap-2 border-white/20 bg-white/5 hover:bg-white/10 w-full sm:w-auto"
-              >
-                <Menu className="w-4 h-4" />
-                <span className="text-sm">Filters</span>
-              </Button>
-            </motion.div>
-
-            {/* Toolbar - Sort and View */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="flex flex-wrap items-center gap-3 justify-between mb-8"
-            >
-              <div className="text-sm text-muted-foreground">
-                Showing <span className="text-white font-semibold">{sortedProducts.length}</span> products
-              </div>
-              
-              <div className="flex items-center gap-3 flex-wrap">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm text-white hover:bg-white/10 cursor-pointer transition-all"
-                >
-                  <option value="featured">Featured</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="rating">Highest Rated</option>
-                </select>
-
-                <div className="flex items-center gap-2 border border-white/10 rounded-lg p-1 bg-white/5">
-                  <Button
-                    size="icon"
-                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                    className={`h-8 w-8 rounded-md ${viewMode === 'grid' ? 'bg-gradient-to-r from-primary to-secondary text-white' : 'text-white/50 hover:text-white'}`}
-                    onClick={() => setViewMode('grid')}
-                  >
-                    <Grid className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant={viewMode === 'list' ? 'default' : 'ghost'}
-                    className={`h-8 w-8 rounded-md ${viewMode === 'list' ? 'bg-gradient-to-r from-primary to-secondary text-white' : 'text-white/50 hover:text-white'}`}
-                    onClick={() => setViewMode('list')}
-                  >
-                    <List className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Products Grid */}
+          {/* Products Grid */}
+          <div className="flex-1 min-w-0 w-full lg:w-auto">
             {sortedProducts.length === 0 ? (
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}
