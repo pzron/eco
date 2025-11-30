@@ -199,32 +199,36 @@ export function Navbar() {
           {isAuthenticated && user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="h-8 w-8 lg:h-10 lg:w-10 text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 rounded-full border border-purple-500/30"
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  className="h-8 w-8 lg:h-10 lg:w-10 rounded-full border-2 border-purple-500/50 hover:border-purple-400 transition-all overflow-hidden flex items-center justify-center bg-gradient-to-br from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30 group"
                   data-testid="profile-button"
                 >
-                  <User className="w-4 h-4" />
-                </Button>
+                  {user.avatar ? (
+                    <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-xs font-bold text-purple-400">{user.name.charAt(0).toUpperCase()}</span>
+                  )}
+                </motion.button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="end" 
-                className="w-56 bg-[#0f0f15]/95 backdrop-blur-xl border-white/10"
+                className="w-56 bg-[#0f0f15]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl shadow-purple-500/10 mt-2"
               >
-                <div className="px-2 py-3 border-b border-white/10">
-                  <p className="text-xs text-muted-foreground">Signed in as</p>
-                  <p className="text-sm font-semibold text-white truncate">{user.email}</p>
+                <div className="px-4 py-4 border-b border-white/10">
+                  <p className="text-xs text-white/50 uppercase tracking-wider mb-1">Signed in as</p>
+                  <p className="text-sm font-semibold text-white truncate">{user.name}</p>
+                  <p className="text-xs text-white/40 truncate">{user.email}</p>
                 </div>
-                <DropdownMenuItem asChild className="focus:bg-white/10 cursor-pointer">
-                  <Link href="/profile" className="flex items-center gap-2 text-white text-sm">
-                    <User className="w-4 h-4" />
+                <DropdownMenuItem asChild className="focus:bg-purple-500/10 cursor-pointer">
+                  <Link href="/profile" className="flex items-center gap-3 text-white text-sm px-4 py-2.5">
+                    <User className="w-4 h-4 text-purple-400" />
                     My Profile
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="focus:bg-white/10 cursor-pointer">
-                  <Link href="/profile" className="flex items-center gap-2 text-white text-sm">
-                    <Settings className="w-4 h-4" />
+                <DropdownMenuItem asChild className="focus:bg-purple-500/10 cursor-pointer">
+                  <Link href="/profile" className="flex items-center gap-3 text-white text-sm px-4 py-2.5">
+                    <Settings className="w-4 h-4 text-cyan-400" />
                     Settings
                   </Link>
                 </DropdownMenuItem>
@@ -234,38 +238,37 @@ export function Navbar() {
                     logout();
                     navigate("/");
                   }}
-                  className="focus:bg-red-500/10 cursor-pointer"
+                  className="focus:bg-red-500/10 cursor-pointer px-4 py-2.5"
                 >
-                  <LogOut className="w-4 h-4 mr-2 text-red-400" />
-                  <span className="text-red-400">Logout</span>
+                  <LogOut className="w-4 h-4 mr-3 text-red-400" />
+                  <span className="text-red-400 text-sm">Logout</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="h-8 w-8 lg:h-10 lg:w-10 text-white/70 hover:text-white hover:bg-white/10 rounded-full"
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  className="h-8 w-8 lg:h-10 lg:w-10 rounded-full border-2 border-white/20 hover:border-white/40 transition-all flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10"
                   data-testid="profile-button"
                 >
                   <User className="w-4 h-4" />
-                </Button>
+                </motion.button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 align="end" 
-                className="w-48 bg-[#0f0f15]/95 backdrop-blur-xl border-white/10"
+                className="w-52 bg-[#0f0f15]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-xl shadow-purple-500/10 mt-2"
               >
-                <DropdownMenuItem asChild className="focus:bg-white/10 cursor-pointer">
-                  <Link href="/signup" className="flex items-center gap-2 text-white text-sm">
-                    <LogIn className="w-4 h-4" />
+                <DropdownMenuItem asChild className="focus:bg-purple-500/10 cursor-pointer">
+                  <Link href="/signup" className="flex items-center gap-3 text-white text-sm px-4 py-2.5">
+                    <LogIn className="w-4 h-4 text-cyan-400" />
                     Login
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="focus:bg-white/10 cursor-pointer">
-                  <Link href="/signup" className="flex items-center gap-2 text-white text-sm">
-                    <UserPlus className="w-4 h-4" />
+                <DropdownMenuItem asChild className="focus:bg-purple-500/10 cursor-pointer">
+                  <Link href="/signup" className="flex items-center gap-3 text-white text-sm px-4 py-2.5">
+                    <UserPlus className="w-4 h-4 text-purple-400" />
                     Sign Up
                   </Link>
                 </DropdownMenuItem>
