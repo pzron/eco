@@ -17,6 +17,8 @@ interface User {
   taxId?: string;
   affiliateApplied?: boolean;
   affiliateApprovedAt?: string;
+  authMethod?: 'email' | 'google' | 'web3';
+  walletAddress?: string;
 }
 
 interface AuthStore {
@@ -24,6 +26,8 @@ interface AuthStore {
   isAuthenticated: boolean;
   login: (email: string, password: string) => void;
   signup: (email: string, password: string, name: string) => void;
+  loginWithGoogle: (name: string, email: string, avatar: string) => void;
+  loginWithWeb3: (walletAddress: string, name: string) => void;
   logout: () => void;
   updateUser: (data: Partial<User>) => void;
   submitAffiliateApplication: (formData: any) => void;
@@ -38,11 +42,12 @@ export const useAuthStore = create<AuthStore>()(
       login: (email: string, password: string) => {
         set({
           user: {
-            id: '1',
+            id: Math.random().toString(36).substr(2, 9),
             email,
             name: email.split('@')[0],
-            avatar: 'https://github.com/shadcn.png',
+            avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
             role: 'customer',
+            authMethod: 'email',
           },
           isAuthenticated: true,
         });
@@ -53,8 +58,36 @@ export const useAuthStore = create<AuthStore>()(
             id: Math.random().toString(36).substr(2, 9),
             email,
             name,
-            avatar: 'https://github.com/shadcn.png',
+            avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`,
             role: 'customer',
+            authMethod: 'email',
+          },
+          isAuthenticated: true,
+        });
+      },
+      loginWithGoogle: (name: string, email: string, avatar: string) => {
+        set({
+          user: {
+            id: Math.random().toString(36).substr(2, 9),
+            email,
+            name,
+            avatar,
+            role: 'customer',
+            authMethod: 'google',
+          },
+          isAuthenticated: true,
+        });
+      },
+      loginWithWeb3: (walletAddress: string, name: string) => {
+        set({
+          user: {
+            id: Math.random().toString(36).substr(2, 9),
+            email: `${walletAddress}@web3.local`,
+            name,
+            avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${walletAddress}`,
+            role: 'customer',
+            authMethod: 'web3',
+            walletAddress,
           },
           isAuthenticated: true,
         });
