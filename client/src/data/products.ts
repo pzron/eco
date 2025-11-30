@@ -32,6 +32,232 @@ export interface Product {
   badgeColor?: string;
 }
 
+// Beauty & Food products from external source
+const externalBeautyProducts: Product[] = [
+  {
+    id: "beauty-1",
+    name: "Organic Face Wash Gel",
+    slug: "organic-face-wash-gel",
+    category: "Beauty",
+    categorySlug: "beauty",
+    price: 12.99,
+    originalPrice: 16.99,
+    rating: 4.6,
+    reviews: 1240,
+    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400",
+    vendorName: "BeautyHub",
+    tags: ["beauty", "skincare", "organic"],
+    badgeColor: "pink",
+    inStock: true,
+    stock: 45,
+  },
+  {
+    id: "beauty-2",
+    name: "Vitamin C Serum",
+    slug: "vitamin-c-serum",
+    category: "Beauty",
+    categorySlug: "beauty",
+    price: 24.99,
+    originalPrice: 29.99,
+    rating: 4.8,
+    reviews: 2150,
+    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400",
+    vendorName: "SkinCare Pro",
+    tags: ["beauty", "serum", "skincare"],
+    badgeColor: "amber",
+    inStock: true,
+    stock: 62,
+    isNew: true,
+  },
+  {
+    id: "beauty-3",
+    name: "Hydrating Face Mask",
+    slug: "hydrating-face-mask",
+    category: "Beauty",
+    categorySlug: "beauty",
+    price: 18.99,
+    rating: 4.7,
+    reviews: 1850,
+    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400",
+    vendorName: "BeautyHub",
+    tags: ["beauty", "mask", "skincare"],
+    badgeColor: "cyan",
+    inStock: true,
+    stock: 38,
+  },
+  {
+    id: "beauty-4",
+    name: "Collagen Night Cream",
+    slug: "collagen-night-cream",
+    category: "Beauty",
+    categorySlug: "beauty",
+    price: 32.99,
+    originalPrice: 44.99,
+    rating: 4.9,
+    reviews: 3420,
+    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400",
+    vendorName: "PremiumBeauty",
+    tags: ["beauty", "cream", "skincare"],
+    badgeColor: "purple",
+    inStock: true,
+    stock: 28,
+    isBestseller: true,
+  },
+  {
+    id: "beauty-5",
+    name: "Eye Contour Serum",
+    slug: "eye-contour-serum",
+    category: "Beauty",
+    categorySlug: "beauty",
+    price: 21.99,
+    rating: 4.5,
+    reviews: 987,
+    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400",
+    vendorName: "SkinCare Pro",
+    tags: ["beauty", "eye care", "serum"],
+    badgeColor: "emerald",
+    inStock: true,
+    stock: 54,
+  },
+];
+
+const externalFoodProducts: Product[] = [
+  {
+    id: "food-1",
+    name: "Organic Honey Raw 500g",
+    slug: "organic-honey-raw-500g",
+    category: "Food",
+    categorySlug: "food",
+    price: 15.99,
+    originalPrice: 19.99,
+    rating: 4.7,
+    reviews: 892,
+    image: "https://images.unsplash.com/photo-1599599810694-b5ac4dd33feq?w=400",
+    vendorName: "FarmFresh",
+    tags: ["food", "honey", "organic"],
+    badgeColor: "amber",
+    inStock: true,
+    stock: 120,
+  },
+  {
+    id: "food-2",
+    name: "Almond Butter Natural",
+    slug: "almond-butter-natural",
+    category: "Food",
+    categorySlug: "food",
+    price: 12.49,
+    rating: 4.6,
+    reviews: 654,
+    image: "https://images.unsplash.com/photo-1599599810694-b5ac4dd33feq?w=400",
+    vendorName: "NutriGoods",
+    tags: ["food", "butter", "nuts"],
+    badgeColor: "emerald",
+    inStock: true,
+    stock: 85,
+  },
+  {
+    id: "food-3",
+    name: "Green Tea Premium 100g",
+    slug: "green-tea-premium-100g",
+    category: "Food",
+    categorySlug: "food",
+    price: 18.99,
+    originalPrice: 24.99,
+    rating: 4.8,
+    reviews: 1240,
+    image: "https://images.unsplash.com/photo-1599599810694-b5ac4dd33feq?w=400",
+    vendorName: "TeaHouse",
+    tags: ["food", "tea", "organic"],
+    badgeColor: "cyan",
+    inStock: true,
+    stock: 95,
+    isNew: true,
+  },
+  {
+    id: "food-4",
+    name: "Organic Coffee Beans 1kg",
+    slug: "organic-coffee-beans-1kg",
+    category: "Food",
+    categorySlug: "food",
+    price: 22.99,
+    originalPrice: 29.99,
+    rating: 4.9,
+    reviews: 2156,
+    image: "https://images.unsplash.com/photo-1599599810694-b5ac4dd33feq?w=400",
+    vendorName: "BeanCrafters",
+    tags: ["food", "coffee", "organic"],
+    badgeColor: "red",
+    inStock: true,
+    stock: 110,
+    isBestseller: true,
+  },
+  {
+    id: "food-5",
+    name: "Raw Almonds 500g",
+    slug: "raw-almonds-500g",
+    category: "Food",
+    categorySlug: "food",
+    price: 16.49,
+    rating: 4.7,
+    reviews: 743,
+    image: "https://images.unsplash.com/photo-1599599810694-b5ac4dd33feq?w=400",
+    vendorName: "NutriGoods",
+    tags: ["food", "nuts", "organic"],
+    badgeColor: "yellow",
+    inStock: true,
+    stock: 78,
+  },
+  {
+    id: "food-6",
+    name: "Organic Olive Oil 750ml",
+    slug: "organic-olive-oil-750ml",
+    category: "Food",
+    categorySlug: "food",
+    price: 19.99,
+    originalPrice: 26.99,
+    rating: 4.6,
+    reviews: 568,
+    image: "https://images.unsplash.com/photo-1599599810694-b5ac4dd33feq?w=400",
+    vendorName: "FarmFresh",
+    tags: ["food", "oil", "organic"],
+    badgeColor: "green",
+    inStock: true,
+    stock: 64,
+  },
+  {
+    id: "food-7",
+    name: "Protein Powder Vanilla 1kg",
+    slug: "protein-powder-vanilla-1kg",
+    category: "Food",
+    categorySlug: "food",
+    price: 28.99,
+    rating: 4.5,
+    reviews: 1823,
+    image: "https://images.unsplash.com/photo-1599599810694-b5ac4dd33feq?w=400",
+    vendorName: "FitNutrition",
+    tags: ["food", "protein", "fitness"],
+    badgeColor: "violet",
+    inStock: true,
+    stock: 89,
+  },
+  {
+    id: "food-8",
+    name: "Dark Chocolate 85% 200g",
+    slug: "dark-chocolate-85-200g",
+    category: "Food",
+    categorySlug: "food",
+    price: 11.99,
+    rating: 4.8,
+    reviews: 2341,
+    image: "https://images.unsplash.com/photo-1599599810694-b5ac4dd33feq?w=400",
+    vendorName: "CocoaCrafts",
+    tags: ["food", "chocolate", "organic"],
+    badgeColor: "red",
+    inStock: true,
+    stock: 145,
+  },
+];
+
 // Color palettes for diverse styling
 const colorPalettes = [
   { bg: "from-purple-600 to-indigo-600", accent: "purple", text: "text-purple-300" },
@@ -57,6 +283,7 @@ const categories = [
   { name: "Books & Media", slug: "books" },
   { name: "Kids & Toys", slug: "kids" },
   { name: "Automotive", slug: "automotive" },
+  { name: "Food", slug: "food" },
 ];
 
 const productNames = [
@@ -73,13 +300,6 @@ const productNames = [
   "Oxford Button Down", "Cargo Pants", "Henley Shirt", "Fleece Jacket",
   "Graphic Tee", "Linen Shirt", "Thermal Base Layer", "Mock Neck Top",
   "Bomber Jacket", "Sweatpants", "Sports Shorts", "Beach Shirt",
-  
-  // Beauty
-  "Facial Cleanser", "Moisturizer Cream", "Serum Essence", "Face Mask Sheet",
-  "Lip Balm", "Sunscreen SPF50", "Night Cream", "Eye Patches",
-  "Toner Solution", "Makeup Primer", "Setting Spray", "Foundation",
-  "Concealer Palette", "Blush Powder", "Eyeshadow", "Mascara",
-  "Eyeliner Pen", "Lipstick", "Lip Gloss", "Makeup Brush Set",
   
   // Home & Living
   "LED Desk Lamp", "Table Clock", "Picture Frame", "Wall Clock",
@@ -136,20 +356,18 @@ const images = [
   "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400",
   "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400",
   "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400",
-  "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400",
   "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400",
-  "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400",
-  "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400",
-  "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400",
-  "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400",
 ];
 
 function generateProducts(): Product[] {
   const generatedProducts: Product[] = [];
   let productId = 0;
 
-  for (const category of categories) {
-    for (let i = 0; i < 35; i++) {
+  // Filter out Beauty and Food from categories for generation
+  const genCategories = categories.filter(c => c.slug !== "beauty" && c.slug !== "food");
+
+  for (const category of genCategories) {
+    for (let i = 0; i < 30; i++) {
       productId++;
       const palette = colorPalettes[(productId - 1) % colorPalettes.length];
       const productName = productNames[(productId - 1) % productNames.length];
@@ -189,11 +407,19 @@ function generateProducts(): Product[] {
   return generatedProducts;
 }
 
-export const products: Product[] = generateProducts();
+export const products: Product[] = [
+  ...generateProducts(),
+  ...externalBeautyProducts,
+  ...externalFoodProducts,
+];
+
+export const PRODUCTS = products;
 
 export const featuredProducts = products.filter(p => p.isFeatured).slice(0, 12);
 export const newArrivals = products.filter(p => p.isNew).slice(0, 12);
 export const bestsellers = products.filter(p => p.isBestseller).slice(0, 12);
+
+export { categories };
 
 export function getProductById(id: string): Product | undefined {
   return products.find(p => p.id === id);
