@@ -39,7 +39,7 @@ localPort = 34679
 externalPort = 3000
 
 [[ports]]
-localPort = 46539
+localPort = 35009
 externalPort = 3001
 
 [deployment]

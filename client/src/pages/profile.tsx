@@ -6,10 +6,8 @@ import { useLocation } from "wouter";
 import {
   User, Package, Heart, Award, Settings, LogOut, MapPin, CreditCard, Clock,
   ChevronRight, Edit2, Trash2, Plus, Bell, Shield, 
-  Mail, Phone, Calendar, Truck, MapPinCheck, RotateCcw, Eye,
-  Lock, Download, Check, AlertCircle, CheckCircle, Circle, Smartphone,
-  Fingerprint, Key, Zap, Trash, HardDrive, Users, Activity, Download as DownloadIcon,
-  Eye as EyeIcon, EyeOff, Wifi, WifiOff, FileText, BarChart3, DollarSign
+  Mail, Phone, Calendar, Truck, MapPinCheck, RotateCcw,
+  Lock, Check, AlertCircle, CheckCircle, Circle, Key
 } from "lucide-react";
 import { useAuthStore } from "@/stores/auth";
 import { useState } from "react";
@@ -21,12 +19,6 @@ export default function ProfilePage() {
   const [editMode, setEditMode] = useState(false);
   const [affiliateStatus, setAffiliateStatus] = useState<"none" | "pending" | "approved">("none");
   const [showAffiliateModal, setShowAffiliateModal] = useState(false);
-  const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
-  const [loginData, setLoginData] = useState([
-    { device: "Chrome on Windows", date: "Today, 2:30 PM", location: "New York, USA", status: "current" },
-    { device: "Safari on iPhone", date: "Yesterday, 10:15 AM", location: "New York, USA", status: "active" },
-    { device: "Mobile App", date: "3 days ago", location: "Boston, USA", status: "inactive" },
-  ]);
 
   if (!isAuthenticated) {
     return (
@@ -48,7 +40,6 @@ export default function ProfilePage() {
     { id: "overview", icon: User, label: "Overview" },
     { id: "orders", icon: Package, label: "Orders" },
     { id: "tracking", icon: Truck, label: "Order Tracking" },
-    { id: "activity", icon: Activity, label: "Activity" },
     { id: "wishlist", icon: Heart, label: "Wishlist" },
     { id: "affiliate", icon: Award, label: "Affiliate Program" },
     { id: "addresses", icon: MapPin, label: "Addresses" },
@@ -78,12 +69,6 @@ export default function ProfilePage() {
     }
   ];
 
-  const activities = [
-    { type: "order", title: "Order Placed", desc: "Order ORD-2024-001 confirmed", time: "Today, 10:00 AM", icon: Package },
-    { type: "payment", title: "Payment Processed", desc: "$2,053.76 charged to Visa", time: "Today, 10:05 AM", icon: CreditCard },
-    { type: "account", title: "Profile Updated", desc: "Email address changed", time: "Nov 28, 3:20 PM", icon: User },
-    { type: "wishlist", title: "Item Added to Wishlist", desc: "PlayStation 5 Pro", time: "Nov 25, 2:15 PM", icon: Heart },
-  ];
 
   const wishlistItems = [
     { name: "PlayStation 5 Pro", price: "$799.99", image: "🎮" },
@@ -326,28 +311,6 @@ export default function ProfilePage() {
               </motion.div>
             )}
 
-            {/* Activity */}
-            {activeNav === "activity" && (
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
-                <div className="bg-gradient-to-br from-white/10 via-white/5 to-transparent border border-white/10 rounded-2xl backdrop-blur-xl p-6">
-                  <h2 className="text-2xl font-bold text-white mb-6">Activity Log</h2>
-                  <motion.div className="space-y-3" variants={containerVariants} initial="hidden" animate="visible">
-                    {activities.map((activity, i) => (
-                      <motion.div key={i} variants={itemVariants} className="flex gap-4 p-4 bg-white/5 border border-white/10 rounded-lg hover:border-white/20 transition-all">
-                        <div className="p-3 bg-primary/10 rounded-lg h-fit">
-                          <activity.icon className="w-5 h-5 text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-semibold text-white">{activity.title}</p>
-                          <p className="text-sm text-muted-foreground">{activity.desc}</p>
-                        </div>
-                        <p className="text-xs text-muted-foreground whitespace-nowrap pt-1">{activity.time}</p>
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                </div>
-              </motion.div>
-            )}
 
             {/* Wishlist */}
             {activeNav === "wishlist" && (
@@ -476,117 +439,19 @@ export default function ProfilePage() {
                   <h2 className="text-2xl font-bold text-white mb-6">Settings</h2>
                   
                   <div className="space-y-6">
-                    {/* Security & Privacy - COMPLETE */}
+                    {/* Security - Change Password */}
                     <div>
-                      <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2"><Shield className="w-5 h-5 text-primary" /> Security & Privacy</h3>
-                      <div className="space-y-3">
-                        {/* Change Password */}
-                        <motion.button whileHover={{ scale: 1.02 }} className="w-full flex items-center justify-between p-3 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-all">
-                          <div className="flex items-center gap-3">
-                            <Key className="w-5 h-5 text-primary" />
-                            <div className="text-left">
-                              <p className="text-white font-semibold text-sm">Change Password</p>
-                              <p className="text-xs text-muted-foreground">Update your password regularly</p>
-                            </div>
+                      <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2"><Shield className="w-5 h-5 text-primary" /> Security</h3>
+                      <motion.button whileHover={{ scale: 1.02 }} className="w-full flex items-center justify-between p-3 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-all">
+                        <div className="flex items-center gap-3">
+                          <Key className="w-5 h-5 text-primary" />
+                          <div className="text-left">
+                            <p className="text-white font-semibold text-sm">Change Password</p>
+                            <p className="text-xs text-muted-foreground">Update your password regularly</p>
                           </div>
-                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                        </motion.button>
-
-                        {/* Two-Factor Authentication */}
-                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10">
-                          <div className="flex items-center gap-3">
-                            <Smartphone className="w-5 h-5 text-primary" />
-                            <div className="text-left">
-                              <p className="text-white font-semibold text-sm">Two-Factor Authentication</p>
-                              <p className="text-xs text-muted-foreground">Add extra security layer</p>
-                            </div>
-                          </div>
-                          <motion.button onClick={() => setTwoFactorEnabled(!twoFactorEnabled)} className={`w-10 h-6 rounded-full transition-all ${twoFactorEnabled ? "bg-green-500" : "bg-white/10"}`}>
-                            <motion.div className={`w-4 h-4 rounded-full bg-white transition-all ${twoFactorEnabled ? "ml-5" : "ml-1"}`} />
-                          </motion.button>
                         </div>
-
-                        {/* Login History */}
-                        <motion.div className="border border-white/10 rounded-lg p-4 bg-white/5">
-                          <div className="flex items-center gap-3 mb-4">
-                            <Clock className="w-5 h-5 text-primary" />
-                            <h4 className="text-white font-semibold text-sm">Login History</h4>
-                          </div>
-                          <div className="space-y-2">
-                            {loginData.map((login, i) => (
-                              <div key={i} className="flex items-center justify-between text-sm p-2 bg-black/20 rounded-lg">
-                                <div>
-                                  <p className="text-white font-medium">{login.device}</p>
-                                  <p className="text-xs text-muted-foreground">{login.location} • {login.date}</p>
-                                </div>
-                                <Badge className={login.status === "current" ? "bg-green-500/20 text-green-400 border-green-500/30" : login.status === "active" ? "bg-blue-500/20 text-blue-400 border-blue-500/30" : "bg-gray-500/20 text-gray-400 border-gray-500/30"} >{login.status}</Badge>
-                              </div>
-                            ))}
-                          </div>
-                        </motion.div>
-
-                        {/* Fingerprint Login */}
-                        <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10">
-                          <div className="flex items-center gap-3">
-                            <Fingerprint className="w-5 h-5 text-primary" />
-                            <div className="text-left">
-                              <p className="text-white font-semibold text-sm">Biometric Login</p>
-                              <p className="text-xs text-muted-foreground">Use fingerprint/face recognition</p>
-                            </div>
-                          </div>
-                          <motion.button className={`w-10 h-6 rounded-full transition-all bg-white/10`}>
-                            <motion.div className={`w-4 h-4 rounded-full bg-white transition-all ml-1`} />
-                          </motion.button>
-                        </div>
-
-                        {/* Privacy Settings */}
-                        <motion.button whileHover={{ scale: 1.02 }} className="w-full flex items-center justify-between p-3 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-all">
-                          <div className="flex items-center gap-3">
-                            <EyeIcon className="w-5 h-5 text-primary" />
-                            <div className="text-left">
-                              <p className="text-white font-semibold text-sm">Privacy Settings</p>
-                              <p className="text-xs text-muted-foreground">Control data sharing & visibility</p>
-                            </div>
-                          </div>
-                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                        </motion.button>
-
-                        {/* Active Sessions */}
-                        <motion.button whileHover={{ scale: 1.02 }} className="w-full flex items-center justify-between p-3 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-all">
-                          <div className="flex items-center gap-3">
-                            <Wifi className="w-5 h-5 text-primary" />
-                            <div className="text-left">
-                              <p className="text-white font-semibold text-sm">Active Sessions</p>
-                              <p className="text-xs text-muted-foreground">Manage your connected devices</p>
-                            </div>
-                          </div>
-                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                        </motion.button>
-
-                        {/* Data Download */}
-                        <motion.button whileHover={{ scale: 1.02 }} className="w-full flex items-center justify-between p-3 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition-all">
-                          <div className="flex items-center gap-3">
-                            <DownloadIcon className="w-5 h-5 text-primary" />
-                            <div className="text-left">
-                              <p className="text-white font-semibold text-sm">Download Your Data</p>
-                              <p className="text-xs text-muted-foreground">Export your personal data</p>
-                            </div>
-                          </div>
-                          <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                        </motion.button>
-
-                        {/* Delete Account */}
-                        <motion.button whileHover={{ scale: 1.02 }} className="w-full flex items-center justify-between p-3 bg-red-500/5 hover:bg-red-500/10 rounded-lg border border-red-500/20 transition-all">
-                          <div className="flex items-center gap-3">
-                            <Trash className="w-5 h-5 text-red-400" />
-                            <div className="text-left">
-                              <p className="text-red-400 font-semibold text-sm">Delete Account</p>
-                              <p className="text-xs text-red-300/70">Permanently delete your account</p>
-                            </div>
-                          </div>
-                          <ChevronRight className="w-4 h-4 text-red-400" />
-                        </motion.button>
-                      </div>
+                        <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                      </motion.button>
                     </div>
 
                     {/* Notifications */}
@@ -617,15 +482,15 @@ export default function ProfilePage() {
                       <h3 className="text-lg font-semibold text-white mb-4">Preferences</h3>
                       <div className="space-y-3">
                         {[
-                          { label: "Email Frequency", value: "Daily" },
-                          { label: "Currency", value: "USD" },
-                          { label: "Language", value: "English" },
-                          { label: "Theme", value: "Dark" }
+                          { label: "Email Frequency", value: "Daily", options: ["Daily", "Weekly", "Monthly"] },
+                          { label: "Currency", value: "USD", options: ["USD", "EUR", "GBP", "INR"] },
+                          { label: "Language", value: "English", options: ["English", "Spanish", "French", "German"] },
+                          { label: "Theme", value: "Dark", options: ["Dark", "Light"] }
                         ].map((item, i) => (
                           <div key={i} className="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/10">
                             <p className="text-white text-sm font-semibold">{item.label}</p>
                             <select className="bg-black/40 border border-white/20 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-primary">
-                              <option>{item.value}</option>
+                              {item.options.map((opt) => <option key={opt}>{opt}</option>)}
                             </select>
                           </div>
                         ))}
