@@ -98,13 +98,13 @@ function StatsCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ scale: 1.05, y: -5 }}
-      className={`relative p-5 rounded-2xl bg-gradient-to-br ${colorClasses[color]} border backdrop-blur-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:shadow-lg`}
+      whileHover={{ scale: 1.05, y: -3 }}
+      className={`relative p-3 rounded-lg bg-gradient-to-br ${colorClasses[color]} border backdrop-blur-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:shadow-lg`}
     >
-      <div className={`w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center mb-2 ${colorClasses[color].split(' ').pop()}`}>
-        <Icon className="w-5 h-5" />
+      <div className={`w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center mb-1 ${colorClasses[color].split(' ').pop()}`}>
+        <Icon className="w-4 h-4" />
       </div>
-      <div className="text-2xl font-bold font-heading text-white">{value}</div>
+      <div className="text-lg font-bold font-heading text-white">{value}</div>
       <div className="text-xs text-white/50">{label}</div>
     </motion.div>
   );
@@ -114,32 +114,32 @@ export function Footer() {
   return (
     <footer className="border-t border-white/10 bg-gradient-to-b from-[#0a0a0f] to-[#050508]">
       <div className="container mx-auto px-4">
-        <div className="py-16">
-          <div className="text-center mb-10">
+        <div className="py-8">
+          <div className="text-center mb-6">
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-3xl md:text-4xl font-heading font-bold text-white mb-6"
+              className="text-xl md:text-2xl font-heading font-bold text-white mb-3"
             >
               Ready to Transform Your Shopping?
             </motion.h2>
             
             {/* Quick Features */}
-            <div className="flex flex-wrap justify-center gap-3 mb-8">
+            <div className="flex flex-wrap justify-center gap-2 mb-4">
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-blue-500/5 border border-blue-500/30 text-blue-300 text-sm font-semibold flex items-center gap-2"
+                className="px-3 py-1 rounded-full bg-gradient-to-r from-blue-500/20 to-blue-500/5 border border-blue-500/30 text-blue-300 text-xs font-semibold flex items-center gap-1.5"
               >
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-3 h-3" />
                 Free Shipping
               </motion.div>
               <motion.div 
                 whileHover={{ scale: 1.05 }}
-                className="px-4 py-2 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-500/5 border border-amber-500/30 text-amber-300 text-sm font-semibold flex items-center gap-2"
+                className="px-3 py-1 rounded-full bg-gradient-to-r from-amber-500/20 to-amber-500/5 border border-amber-500/30 text-amber-300 text-xs font-semibold flex items-center gap-1.5"
               >
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-3 h-3" />
                 Fast Delivery
               </motion.div>
             </div>
@@ -149,7 +149,7 @@ export function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-white/60 max-w-xl mx-auto mb-8"
+              className="text-white/60 max-w-xl mx-auto mb-4 text-sm"
             >
               Join thousands of satisfied customers and discover a new way to shop online.
             </motion.p>
@@ -159,7 +159,7 @@ export function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-10"
+              className="grid grid-cols-2 md:grid-cols-4 gap-2 max-w-3xl mx-auto mb-6"
             >
               {statsCards.map((stat, index) => (
                 <StatsCard 
@@ -178,15 +178,15 @@ export function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="flex flex-col sm:flex-row items-center justify-center gap-3"
             >
               <Link href="/signup">
-                <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full px-8 py-6 font-medium shadow-lg shadow-purple-500/25 transition-all hover:shadow-purple-500/40 hover:scale-105">
+                <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full px-6 py-3 font-medium text-sm shadow-lg shadow-purple-500/25 transition-all hover:shadow-purple-500/40 hover:scale-105">
                   Create Account
                 </Button>
               </Link>
               <Link href="/products">
-                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-full px-8 py-6 font-medium">
+                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-full px-6 py-3 font-medium text-sm">
                   Browse Products
                 </Button>
               </Link>
