@@ -218,8 +218,8 @@ export function ProductGrid() {
           <p className="text-white/60">Explore 350+ premium products across 10 categories</p>
         </motion.div>
 
-        {/* Responsive grid - 3-8 columns based on screen size */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3 md:gap-4">
+        {/* Responsive grid - 4 items per line with variations */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-5">
           {products.map((product, index) => (
             <ProductCard 
               key={product.id} 

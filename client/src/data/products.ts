@@ -32,6 +32,50 @@ export interface Product {
   badgeColor?: string;
 }
 
+export interface Category {
+  name: string;
+  slug: string;
+  icon: string;
+}
+
+// 30+ Categories with icons
+export const categories: Category[] = [
+  { name: "Electronics", slug: "electronics", icon: "⚡" },
+  { name: "Fashion", slug: "fashion", icon: "👔" },
+  { name: "Beauty", slug: "beauty", icon: "💄" },
+  { name: "Home & Living", slug: "home", icon: "🏠" },
+  { name: "Sports & Fitness", slug: "sports", icon: "🏋️" },
+  { name: "Gaming", slug: "gaming", icon: "🎮" },
+  { name: "Jewelry & Watches", slug: "jewelry", icon: "💎" },
+  { name: "Books & Media", slug: "books", icon: "📚" },
+  { name: "Kids & Toys", slug: "kids", icon: "🧸" },
+  { name: "Automotive", slug: "automotive", icon: "🚗" },
+  { name: "Food & Grocery", slug: "food", icon: "🛒" },
+  { name: "Health & Wellness", slug: "health", icon: "💊" },
+  { name: "Appliances", slug: "appliances", icon: "🔌" },
+  { name: "Furniture", slug: "furniture", icon: "🛋️" },
+  { name: "Outdoor & Garden", slug: "outdoor", icon: "🌿" },
+  { name: "Pet Supplies", slug: "pets", icon: "🐾" },
+  { name: "Sports Equipment", slug: "sports_eq", icon: "⚽" },
+  { name: "Musical Instruments", slug: "music", icon: "🎸" },
+  { name: "Art & Craft", slug: "art", icon: "🎨" },
+  { name: "Tools & Hardware", slug: "tools", icon: "🔨" },
+  { name: "Office Supplies", slug: "office", icon: "📎" },
+  { name: "School Supplies", slug: "school", icon: "✏️" },
+  { name: "Party & Events", slug: "party", icon: "🎉" },
+  { name: "Camping & Hiking", slug: "camping", icon: "⛺" },
+  { name: "Travel & Luggage", slug: "travel", icon: "✈️" },
+  { name: "Shoes & Footwear", slug: "shoes", icon: "👟" },
+  { name: "Bags & Accessories", slug: "bags", icon: "👜" },
+  { name: "Home Decor", slug: "decor", icon: "🖼️" },
+  { name: "Lighting", slug: "lighting", icon: "💡" },
+  { name: "Kitchen & Dining", slug: "kitchen", icon: "🍳" },
+  { name: "Bedding & Bath", slug: "bedding", icon: "🛏️" },
+  { name: "Smart Home", slug: "smart", icon: "📱" },
+  { name: "Fitness Gear", slug: "fitness", icon: "🏃" },
+  { name: "Baby Products", slug: "baby", icon: "👶" },
+];
+
 // Color palettes for diverse styling
 const colorPalettes = [
   { bg: "from-purple-600 to-indigo-600", accent: "purple", text: "text-purple-300" },
@@ -46,69 +90,22 @@ const colorPalettes = [
   { bg: "from-violet-600 to-purple-600", accent: "violet", text: "text-violet-300" },
 ];
 
-const categories = [
-  { name: "Electronics", slug: "electronics" },
-  { name: "Fashion", slug: "fashion" },
-  { name: "Beauty", slug: "beauty" },
-  { name: "Home & Living", slug: "home" },
-  { name: "Sports & Fitness", slug: "sports" },
-  { name: "Gaming", slug: "gaming" },
-  { name: "Jewelry & Watches", slug: "jewelry" },
-  { name: "Books & Media", slug: "books" },
-  { name: "Kids & Toys", slug: "kids" },
-  { name: "Automotive", slug: "automotive" },
-];
-
 const productNames = [
-  // Electronics
   "Wireless Earbuds Pro", "USB-C Hub 7-in-1", "Portable SSD 1TB", "Smart Watch Series",
   "Bluetooth Speaker", "4K Webcam", "Mechanical Keyboard", "Gaming Mouse",
   "Phone Stand Adjustable", "Laptop Cooler", "USB Hub 3.0", "Monitor Lamp",
-  "Wireless Charger", "Power Bank 20000mAh", "HDMI Cable 2M", "Phone Mount",
-  
-  // Fashion
   "Casual Cotton T-Shirt", "Slim Fit Jeans", "Crew Neck Sweater", "Polo Shirt",
   "Denim Jacket", "Chino Pants", "Hoodie Sweatshirt", "V-Neck Cardigan",
-  "Oxford Button Down", "Cargo Pants", "Henley Shirt", "Fleece Jacket",
-  "Graphic Tee", "Linen Shirt", "Thermal Base Layer", "Mock Neck Top",
-  
-  // Beauty
   "Facial Cleanser", "Moisturizer Cream", "Serum Essence", "Face Mask Sheet",
   "Lip Balm", "Sunscreen SPF50", "Night Cream", "Eye Patches",
-  "Toner Solution", "Makeup Primer", "Setting Spray", "Foundation",
-  "Concealer Palette", "Blush Powder", "Eyeshadow", "Mascara",
-  
-  // Home & Living
   "LED Desk Lamp", "Table Clock", "Picture Frame", "Wall Clock",
   "Throw Pillow", "Floor Mat", "Area Rug", "Bed Sheet Set",
-  "Comforter", "Pillow", "Duvet Cover", "Curtains",
-  "Blinds", "Door Mat", "Wall Decoration", "Shelf",
-  
-  // Sports & Fitness
   "Yoga Mat Non-Slip", "Resistance Bands", "Dumbbell Set", "Kettlebell",
-  "Pull-up Bar", "Ab Wheel", "Foam Roller", "Jump Rope",
-  "Hand Grips", "Wrist Wraps", "Gym Gloves", "Sweatband",
-  
-  // Gaming
   "Gaming Headset", "Controller Pad", "Gaming Chair", "Desk Mount",
-  "Mousepad Large", "Game Console", "Graphics Card", "SSD NVMe",
-  "Cooling Fan", "RGB Light Strip", "Cable Clips", "Controller Charger",
-  
-  // Jewelry & Watches
   "Gold Chain Necklace", "Silver Bracelet", "Diamond Ring", "Pearl Earrings",
-  "Analog Watch", "Smart Watch", "Leather Strap", "Beaded Bracelet",
-  
-  // Books & Media
   "Fiction Novel", "Self-Help Book", "Biography", "Science Book",
-  "Comic Book Series", "Travel Guide", "Cookbook", "Art Book",
-  
-  // Kids & Toys
   "Action Figure", "LEGO Set", "Puzzle Game", "Board Game",
-  "Plush Toy", "Building Blocks", "Toy Car", "Doll",
-  
-  // Automotive
   "Car Phone Mount", "Dash Cam", "Car Charger", "USB Adapter",
-  "Car Air Freshener", "Floor Mats", "Seat Covers", "Steering Cover",
 ];
 
 const images = [
@@ -124,7 +121,7 @@ function generateProducts(): Product[] {
   let productId = 0;
 
   for (const category of categories) {
-    for (let i = 0; i < 35; i++) {
+    for (let i = 0; i < 8; i++) {
       productId++;
       const palette = colorPalettes[(productId - 1) % colorPalettes.length];
       const productName = productNames[(productId - 1) % productNames.length];
@@ -171,8 +168,6 @@ export const PRODUCTS = products;
 export const featuredProducts = products.filter(p => p.isFeatured).slice(0, 12);
 export const newArrivals = products.filter(p => p.isNew).slice(0, 12);
 export const bestsellers = products.filter(p => p.isBestseller).slice(0, 12);
-
-export { categories };
 
 export function getProductById(id: string): Product | undefined {
   return products.find(p => p.id === id);
