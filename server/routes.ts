@@ -1,6 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { db } from "./db";
+import { users, products, vendors, desc, eq } from "@shared/schema";
 import { insertProductSchema, insertCategorySchema, insertReviewSchema, insertCartItemSchema, insertOrderSchema } from "@shared/schema";
 import { z } from "zod";
 
@@ -387,7 +389,7 @@ export async function registerRoutes(
   // ===== ADMIN USER MANAGEMENT =====
   app.get("/api/admin/users", async (req, res) => {
     try {
-      const allUsers = await storage.getUsers ? await storage.getUsers() : [];
+      const allUsers = await db.select().from(users).orderBy(desc(users.createdAt));
       res.json(allUsers);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch users" });
@@ -429,7 +431,7 @@ export async function registerRoutes(
   app.get("/api/vendor/products", async (req, res) => {
     try {
       const { vendorId } = req.query;
-      const vendorProducts = await storage.getProducts({ vendorId: vendorId as string });
+      const vendorProducts = await db.select().from(products).where(eq(products.vendorId, vendorId as string));
       res.json(vendorProducts);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch vendor products" });
