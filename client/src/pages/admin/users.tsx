@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, MoreVertical, Shield, Ban, CheckCircle } from "lucide-react";
+import { Search, Trash2, Shield } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
 export default function AdminUsers() {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchUsers();
@@ -20,7 +21,7 @@ export default function AdminUsers() {
     try {
       const res = await fetch("/api/admin/users");
       const data = await res.json();
-      setUsers(data);
+      setUsers(data || []);
       setLoading(false);
     } catch (error) {
       console.error("Failed to fetch users:", error);
@@ -52,7 +53,12 @@ export default function AdminUsers() {
     }
   };
 
-  if (loading) return <div className="text-white">Loading users...</div>;
+  const filteredUsers = users.filter(u => 
+    u.username?.toLowerCase().includes(search.toLowerCase()) ||
+    u.email?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  if (loading) return <div className="text-white text-center py-12">Loading users...</div>;
 
   return (
     <DashboardLayout role="admin">
@@ -70,7 +76,12 @@ export default function AdminUsers() {
               <CardTitle className="text-white">All Users ({users.length})</CardTitle>
               <div className="relative w-64">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input placeholder="Search users..." className="pl-9 bg-black/20 border-white/10" />
+                <Input 
+                  placeholder="Search users..." 
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="pl-9 bg-black/20 border-white/10" 
+                />
               </div>
             </div>
           </CardHeader>
@@ -79,16 +90,16 @@ export default function AdminUsers() {
               <thead className="bg-white/5 text-xs uppercase text-muted-foreground">
                 <tr>
                   <th className="px-6 py-3 text-left">User</th>
-                  <th className="px-6 py-3 text-left">Role</th>
                   <th className="px-6 py-3 text-left">Email</th>
-                  <th className="px-6 py-3 text-left">Verified</th>
+                  <th className="px-6 py-3 text-left">Role</th>
+                  <th className="px-6 py-3 text-left">Status</th>
                   <th className="px-6 py-3 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {users.map((user: any, i: number) => (
+                {filteredUsers.map((user: any, i: number) => (
                   <motion.tr 
-                    key={i}
+                    key={user.id}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.05 }}
@@ -103,6 +114,7 @@ export default function AdminUsers() {
                         <div className="font-medium text-white">{user.fullName || user.username}</div>
                       </div>
                     </td>
+                    <td className="px-6 py-4 text-white/70 text-sm">{user.email}</td>
                     <td className="px-6 py-4">
                       <select 
                         value={user.role}
@@ -116,24 +128,17 @@ export default function AdminUsers() {
                       </select>
                     </td>
                     <td className="px-6 py-4">
-                      {user.email}
+                      <Badge className={user.isVerified ? 'bg-green-500/20 text-green-300' : 'bg-orange-500/20 text-orange-300'}>
+                        {user.isVerified ? '✓ Verified' : 'Pending'}
                       </Badge>
                     </td>
-                    <td className="px-6 py-4">
-                      <Badge className={`
-                        ${user.status === 'Active' || user.status === 'Verified' ? 'bg-green-500/20 text-green-400' : ''}
-                        ${user.status === 'Pending' ? 'bg-yellow-500/20 text-yellow-400' : ''}
-                        ${user.status === 'Banned' ? 'bg-red-500/20 text-red-400' : ''}
-                        border-none
-                      `}>
-                        {user.status}
-                      </Badge>
-                    </td>
-                    <td className="px-6 py-4 text-white font-mono">{user.spent}</td>
-                    <td className="px-6 py-4 text-right">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-white">
-                        <MoreVertical className="w-4 h-4" />
-                      </Button>
+                    <td className="px-6 py-4 text-right flex gap-2 justify-end">
+                      <button 
+                        onClick={() => deleteUser(user.id)}
+                        className="p-2 hover:bg-red-500/20 rounded-lg text-red-400 transition"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </td>
                   </motion.tr>
                 ))}
