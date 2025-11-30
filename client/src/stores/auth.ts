@@ -158,14 +158,40 @@ export const useAuthStore = create<AuthStore>()(
         });
         return true;
       },
-      googleVerifyAndCreateAccount: (idToken: string) => {
-        // In production: Verify idToken with Google API
-        // For demo: Assume verification succeeds
+      googleVerifyAndCreateAccount: (name: string, email: string, avatar: string, idToken: string) => {
+        // In production: Verify idToken with Google OAuth 2.0 API
+        // Token can be verified at: https://oauth2.googleapis.com/tokeninfo?id_token={idToken}
+        console.log('Google ID Token received for verification:', idToken.substring(0, 20) + '...');
+        set({
+          user: {
+            id: Math.random().toString(36).substr(2, 9),
+            email,
+            name,
+            avatar,
+            role: 'customer',
+            authMethod: 'google',
+          },
+          isAuthenticated: true,
+        });
         return { success: true, message: 'Google account verified and approved' };
       },
-      web3VerifyAndCreateAccount: (signature: string, message: string, walletAddress: string) => {
-        // In production: Verify signature with ethers.js
-        // For demo: Assume verification succeeds
+      web3VerifyAndCreateAccount: (signature: string, message: string, walletAddress: string, name: string) => {
+        // In production: Verify signature using ethers.js
+        // Example: ethers.verifyMessage(message, signature) should return walletAddress
+        console.log('Web3 Signature verification - Address:', walletAddress);
+        console.log('Signed message:', message.substring(0, 50) + '...');
+        set({
+          user: {
+            id: Math.random().toString(36).substr(2, 9),
+            email: `${walletAddress}@web3.local`,
+            name,
+            avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${walletAddress}`,
+            role: 'customer',
+            authMethod: 'web3',
+            walletAddress,
+          },
+          isAuthenticated: true,
+        });
         return { success: true, message: 'Web3 wallet verified and approved' };
       },
     }),

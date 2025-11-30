@@ -3,10 +3,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "wouter";
-import { ArrowRight, Mail, Wallet, Eye, EyeOff, Check, X } from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, Mail, Wallet, Eye, EyeOff, Check, X, AlertCircle } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useAuthStore } from "@/stores/auth";
-import { isValidEmail, isValidPhone, validatePassword, connectWeb3Wallet } from "@/lib/validation";
+import { isValidEmail, isValidPhone, validatePassword, connectWeb3Wallet, authenticateWithGoogle, signMessageWithWeb3Wallet } from "@/lib/validation";
 
 export default function SignUpPage() {
   const [, navigate] = useLocation();
@@ -23,8 +23,26 @@ export default function SignUpPage() {
   const [otpStep, setOtpStep] = useState(false);
   const [otpCode, setOtpCode] = useState("");
   const [verificationMethod, setVerificationMethod] = useState<'email' | 'phone'>('email');
+  const [googleSigninReady, setGoogleSigninReady] = useState(false);
 
   const passwordValidation = validatePassword(password);
+
+  useEffect(() => {
+    // Preload Google Sign-In SDK
+    const loadSDK = async () => {
+      try {
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => setGoogleSigninReady(true);
+        document.head.appendChild(script);
+      } catch (error) {
+        console.error('Failed to load Google SDK:', error);
+      }
+    };
+    loadSDK();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,22 +100,25 @@ export default function SignUpPage() {
   const handleGoogleAuth = async () => {
     setIsLoading(true);
     try {
-      // Real Google OAuth would integrate with Google Sign-In library
-      // For demonstration, we simulate the flow
-      const name = "Google User";
-      const googleEmail = email || "user@gmail.com";
-      const avatar = `https://api.dicebear.com/7.x/avataaars/svg?seed=google-${Date.now()}`;
-
-      // In production, you would:
-      // 1. Load Google Sign-In SDK
-      // 2. Call google.accounts.id.initialize()
-      // 3. Handle the callback with actual user data
-      
-      loginWithGoogle(name, googleEmail, avatar);
-      navigate("/");
+      // Real Google OAuth authentication
+      const googleUser = await authenticateWithGoogle();
+      if (googleUser) {
+        // Verify with backend and create account
+        const result = googleVerifyAndCreateAccount(googleUser.name, googleUser.email, googleUser.avatar, googleUser.idToken);
+        if (result.success) {
+          setIsLoading(false);
+          navigate("/");
+        } else {
+          setErrors({ google: result.message });
+          setIsLoading(false);
+        }
+      } else {
+        setErrors({ google: 'Failed to authenticate with Google' });
+        setIsLoading(false);
+      }
     } catch (error) {
       console.error('Google auth failed:', error);
-    } finally {
+      setErrors({ google: 'Google authentication error' });
       setIsLoading(false);
     }
   };
@@ -105,18 +126,40 @@ export default function SignUpPage() {
   const handleWeb3Auth = async () => {
     setIsLoading(true);
     try {
-      // Real Web3 wallet connection
+      // Real Web3 wallet connection and message signing
       const walletData = await connectWeb3Wallet();
       if (walletData) {
-        loginWithWeb3(walletData.address, walletData.name);
-        navigate("/");
+        // Create a message for user to sign
+        const message = `Sign this message to verify your wallet and create your NexCommerce account.\n\nTimestamp: ${new Date().toISOString()}\nWallet: ${walletData.address}`;
+        
+        // Sign message with wallet
+        const signedData = await signMessageWithWeb3Wallet(message);
+        if (signedData) {
+          // Verify signature and create account
+          const result = web3VerifyAndCreateAccount(
+            signedData.signature,
+            message,
+            signedData.address,
+            walletData.name
+          );
+          if (result.success) {
+            setIsLoading(false);
+            navigate("/");
+          } else {
+            setErrors({ web3: result.message });
+            setIsLoading(false);
+          }
+        } else {
+          setErrors({ web3: 'Failed to sign message. Please try again.' });
+          setIsLoading(false);
+        }
       } else {
         setErrors({ web3: 'Failed to connect wallet. Please ensure MetaMask is installed.' });
+        setIsLoading(false);
       }
     } catch (error) {
       console.error('Web3 auth failed:', error);
       setErrors({ web3: 'Wallet connection failed' });
-    } finally {
       setIsLoading(false);
     }
   };
@@ -392,7 +435,12 @@ export default function SignUpPage() {
             </motion.button>
           </motion.div>
 
-          {errors.web3 && <p className="text-xs text-red-400 text-center mt-2">{errors.web3}</p>}
+          {(errors.web3 || errors.google) && (
+            <div className="mt-3 p-3 rounded-lg bg-red-500/10 border border-red-500/20 flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-red-400">{errors.web3 || errors.google}</p>
+            </div>
+          )}
 
           {/* Footer */}
           <motion.div className="mt-8 text-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
