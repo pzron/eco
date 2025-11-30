@@ -2,7 +2,8 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { db } from "./db";
-import { users, products, vendors, desc, eq } from "@shared/schema";
+import { desc, eq } from "drizzle-orm";
+import { users, products, vendors } from "@shared/schema";
 import { insertProductSchema, insertCategorySchema, insertReviewSchema, insertCartItemSchema, insertOrderSchema } from "@shared/schema";
 import { z } from "zod";
 
