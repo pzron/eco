@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { motion, useMotionValue, useTransform } from "framer-motion";
-import { ArrowRight, Box, Star, Headset, Globe, Sparkles, Zap, Shield, Truck } from "lucide-react";
+import { ArrowRight, Sparkles, Zap, Shield, Truck, Headset } from "lucide-react";
 import { Link } from "wouter";
 import { Canvas } from "@react-three/fiber";
 import { Float, OrbitControls, Environment } from "@react-three/drei";
@@ -114,7 +114,7 @@ export function Hero() {
 
   return (
     <div 
-      className="relative min-h-screen flex flex-col items-center justify-center pt-20 overflow-hidden"
+      className="relative h-[66vh] min-h-[500px] max-h-[700px] flex flex-col items-center justify-center pt-16 overflow-hidden"
       onMouseMove={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         mouseX.set(e.clientX - rect.width / 2);
@@ -123,9 +123,9 @@ export function Hero() {
     >
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f] via-[#0f0f1a] to-[#0a0a0f]" />
-        <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-purple-500/15 rounded-full blur-[150px] animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-pink-500/15 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: "1s" }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/10 rounded-full blur-[200px] animate-pulse" style={{ animationDelay: "2s" }} />
+        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-purple-500/15 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-pink-500/15 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: "1s" }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: "2s" }} />
         
         <div className="absolute inset-0 opacity-20">
           <div className="absolute w-full h-full" style={{
@@ -143,10 +143,10 @@ export function Hero() {
 
       <div className="container relative z-10 px-4 flex flex-col items-center text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.9 }}
+          initial={{ opacity: 0, y: 20, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 backdrop-blur-xl mb-8 shadow-lg shadow-purple-500/10"
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 backdrop-blur-xl mb-6 shadow-lg shadow-purple-500/10"
           data-testid="hero-badge"
         >
           <Sparkles className="w-4 h-4 text-purple-400 animate-pulse" />
@@ -161,13 +161,13 @@ export function Hero() {
           className="relative"
         >
           <motion.h1
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-bold tracking-tight text-white mb-6 max-w-5xl leading-tight"
+            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-bold tracking-tight text-white mb-4 max-w-4xl leading-tight"
             data-testid="hero-title"
           >
-            The Future of <br />
+            The Future of{" "}
             <span className="relative inline-block">
               <span className="relative z-10 bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
                 Shopping
@@ -183,26 +183,25 @@ export function Hero() {
         </motion.div>
 
         <motion.p
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          className="text-lg md:text-xl text-white/60 mb-10 max-w-2xl leading-relaxed"
+          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+          className="text-base md:text-lg text-white/60 mb-8 max-w-xl leading-relaxed"
           data-testid="hero-description"
         >
-          Experience the next generation of e-commerce with immersive 3D product visualization, 
-          AI-powered recommendations, and seamless Web3 payments.
+          Experience immersive 3D product visualization, AI-powered recommendations, and seamless Web3 payments.
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
           className="flex flex-wrap items-center justify-center gap-4"
         >
           <Link href="/products">
             <Button 
               size="lg" 
-              className="h-14 px-8 text-lg rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/30 transition-all duration-300 hover:shadow-purple-500/50 hover:scale-105 font-semibold"
+              className="h-12 px-6 text-base rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 shadow-lg shadow-purple-500/30 transition-all duration-300 hover:shadow-purple-500/50 hover:scale-105 font-semibold"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               data-testid="explore-products-button"
@@ -212,7 +211,7 @@ export function Hero() {
                 className="flex items-center"
               >
                 Explore Products 
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowRight className="ml-2 w-4 h-4" />
               </motion.span>
             </Button>
           </Link>
@@ -221,7 +220,7 @@ export function Hero() {
             <Button 
               size="lg" 
               variant="outline" 
-              className="h-14 px-8 text-lg rounded-xl border-white/20 bg-white/5 hover:bg-white/10 backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:border-purple-500/30"
+              className="h-12 px-6 text-base rounded-xl border-white/20 bg-white/5 hover:bg-white/10 backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:border-purple-500/30"
               data-testid="get-started-button"
             >
               Get Started Free
@@ -230,10 +229,10 @@ export function Hero() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
-          className="flex flex-wrap justify-center gap-8 mt-16 text-sm text-white/40"
+          transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+          className="flex flex-wrap justify-center gap-6 mt-10 text-sm text-white/40"
         >
           {[
             { icon: Truck, text: "Free Shipping" },
@@ -247,74 +246,7 @@ export function Hero() {
             </div>
           ))}
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1, ease: "easeOut" }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 w-full max-w-4xl"
-        >
-          <StatsCard icon={Box} value="500+" label="Products" color="purple" delay={0} />
-          <StatsCard icon={Star} value="4.9" label="Rating" color="yellow" delay={0.1} />
-          <StatsCard icon={Globe} value="150+" label="Countries" color="cyan" delay={0.2} />
-          <StatsCard icon={Headset} value="24/7" label="Support" color="green" delay={0.3} />
-        </motion.div>
       </div>
-
-      <motion.div 
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <div className="flex flex-col items-center gap-2 text-white/30">
-          <span className="text-xs">Scroll to explore</span>
-          <div className="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-2">
-            <motion.div 
-              className="w-1.5 h-1.5 rounded-full bg-white/40"
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            />
-          </div>
-        </div>
-      </motion.div>
     </div>
-  );
-}
-
-function StatsCard({ 
-  icon: Icon, 
-  value, 
-  label, 
-  color,
-  delay = 0
-}: { 
-  icon: any;
-  value: string;
-  label: string;
-  color: "purple" | "yellow" | "cyan" | "green";
-  delay?: number;
-}) {
-  const colorClasses = {
-    purple: "from-purple-500/20 to-purple-500/5 border-purple-500/20 text-purple-400",
-    yellow: "from-yellow-500/20 to-yellow-500/5 border-yellow-500/20 text-yellow-400",
-    cyan: "from-cyan-500/20 to-cyan-500/5 border-cyan-500/20 text-cyan-400",
-    green: "from-green-500/20 to-green-500/5 border-green-500/20 text-green-400",
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 1 + delay }}
-      whileHover={{ scale: 1.05, y: -5 }}
-      className={`relative p-6 rounded-2xl bg-gradient-to-br ${colorClasses[color]} border backdrop-blur-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:shadow-lg`}
-      data-testid={`stats-${label.toLowerCase()}`}
-    >
-      <div className={`w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-3 ${colorClasses[color].split(' ').pop()}`}>
-        <Icon className="w-6 h-6" />
-      </div>
-      <div className="text-3xl font-bold font-heading text-white">{value}</div>
-      <div className="text-sm text-white/50">{label}</div>
-    </motion.div>
   );
 }

@@ -1,6 +1,7 @@
 import { Link } from "wouter";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Box, Star, Globe, Headset } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const quickLinks = [
   { label: "Home", href: "/" },
@@ -64,19 +65,102 @@ const socialLinks = [
   },
 ];
 
+const statsCards = [
+  { icon: Box, value: "500+", label: "Products", color: "purple" as const },
+  { icon: Star, value: "4.9", label: "Rating", color: "yellow" as const },
+  { icon: Globe, value: "150+", label: "Countries", color: "cyan" as const },
+  { icon: Headset, value: "24/7", label: "Support", color: "green" as const },
+];
+
+function StatsCard({ 
+  icon: Icon, 
+  value, 
+  label, 
+  color,
+  index
+}: { 
+  icon: any;
+  value: string;
+  label: string;
+  color: "purple" | "yellow" | "cyan" | "green";
+  index: number;
+}) {
+  const colorClasses = {
+    purple: "from-purple-500/20 to-purple-500/5 border-purple-500/30 text-purple-400",
+    yellow: "from-yellow-500/20 to-yellow-500/5 border-yellow-500/30 text-yellow-400",
+    cyan: "from-cyan-500/20 to-cyan-500/5 border-cyan-500/30 text-cyan-400",
+    green: "from-green-500/20 to-green-500/5 border-green-500/30 text-green-400",
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ scale: 1.05, y: -5 }}
+      className={`relative p-5 rounded-2xl bg-gradient-to-br ${colorClasses[color]} border backdrop-blur-xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:shadow-lg`}
+    >
+      <div className={`w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center mb-2 ${colorClasses[color].split(' ').pop()}`}>
+        <Icon className="w-5 h-5" />
+      </div>
+      <div className="text-2xl font-bold font-heading text-white">{value}</div>
+      <div className="text-xs text-white/50">{label}</div>
+    </motion.div>
+  );
+}
+
 export function Footer() {
   return (
     <footer className="border-t border-white/10 bg-gradient-to-b from-[#0a0a0f] to-[#050508]">
       <div className="container mx-auto px-4">
         <div className="py-16">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-4">
+          <div className="text-center mb-10">
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-3xl md:text-4xl font-heading font-bold text-white mb-4"
+            >
               Ready to Transform Your Shopping?
-            </h2>
-            <p className="text-white/60 max-w-xl mx-auto mb-8">
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-white/60 max-w-xl mx-auto mb-8"
+            >
               Join thousands of satisfied customers and discover a new way to shop online.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            </motion.p>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-10"
+            >
+              {statsCards.map((stat, index) => (
+                <StatsCard 
+                  key={stat.label}
+                  icon={stat.icon}
+                  value={stat.value}
+                  label={stat.label}
+                  color={stat.color}
+                  index={index}
+                />
+              ))}
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            >
               <Link href="/signup">
                 <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full px-8 py-6 font-medium shadow-lg shadow-purple-500/25 transition-all hover:shadow-purple-500/40 hover:scale-105">
                   Create Account
@@ -87,7 +171,7 @@ export function Footer() {
                   Browse Products
                 </Button>
               </Link>
-            </div>
+            </motion.div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pt-12 border-t border-white/10">
