@@ -40,6 +40,7 @@ export const useAuthStore = create<AuthStore>()(
       user: null,
       isAuthenticated: false,
       login: (email: string, password: string) => {
+        // Real authentication would validate against backend
         set({
           user: {
             id: Math.random().toString(36).substr(2, 9),
@@ -66,6 +67,13 @@ export const useAuthStore = create<AuthStore>()(
         });
       },
       loginWithGoogle: (name: string, email: string, avatar: string) => {
+        // Real Google OAuth flow:
+        // 1. Load Google Sign-In SDK
+        // 2. User clicks Google button
+        // 3. Google popup opens, user authenticates
+        // 4. Google returns ID token
+        // 5. Send ID token to backend for verification
+        // 6. Backend verifies token and returns user data
         set({
           user: {
             id: Math.random().toString(36).substr(2, 9),
@@ -79,6 +87,15 @@ export const useAuthStore = create<AuthStore>()(
         });
       },
       loginWithWeb3: (walletAddress: string, name: string) => {
+        // Real Web3 authentication flow:
+        // 1. User clicks Web3 button
+        // 2. MetaMask/wallet extension opens
+        // 3. User confirms wallet connection
+        // 4. Wallet provider returns connected address
+        // 5. Generate message for user to sign with wallet
+        // 6. User signs message in wallet
+        // 7. Send signed message to backend for verification
+        // 8. Backend verifies signature and creates session
         set({
           user: {
             id: Math.random().toString(36).substr(2, 9),
