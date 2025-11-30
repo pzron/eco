@@ -322,3 +322,66 @@ export async function registerRoutes(
 
   return httpServer;
 }
+
+  // Real-time calculation endpoints
+  app.post("/api/cart/calculate", async (req, res) => {
+    try {
+      const { items } = req.body;
+      if (!Array.isArray(items)) {
+        return res.status(400).json({ message: "Items must be an array" });
+      }
+
+      const { calculateCartTotals } = await import("./api/cart-calculator");
+      const cartItems = await Promise.all(
+        items.map(async (item: any) => {
+          const product = await storage.getProduct(item.productId);
+          return {
+            productId: item.productId,
+            quantity: item.quantity,
+            price: product ? parseFloat(product.price.toString()) : 0,
+            product,
+          };
+        })
+      );
+
+      const calculation = calculateCartTotals(cartItems);
+      res.json(calculation);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to calculate cart" });
+    }
+  });
+
+  app.post("/api/orders/create-with-calculations", async (req, res) => {
+    try {
+      const { createOrderWithCalculations } = await import("./api/order-service");
+      const result = await createOrderWithCalculations(req.body);
+      
+      if (result.success) {
+        res.status(201).json(result);
+      } else {
+        res.status(400).json({ message: result.error });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "Failed to create order" });
+    }
+  });
+
+  app.get("/api/dashboard/analytics", async (req, res) => {
+    try {
+      const { calculateDashboardAnalytics } = await import("./api/order-service");
+      const analytics = await calculateDashboardAnalytics();
+      res.json(analytics);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch analytics" });
+    }
+  });
+
+  app.get("/api/health", async (req, res) => {
+    res.json({ 
+      status: "ok", 
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      version: "1.0.0",
+      database: "connected",
+    });
+  });
