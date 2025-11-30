@@ -139,6 +139,8 @@ export default function ProductsPage() {
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-white">
       <Navbar />
       
+      <CategoriesCarousel />
+      
       <main className="pt-20 pb-20">
         {/* Header Section */}
         <div className="container mx-auto px-4 mb-8">
@@ -295,7 +297,7 @@ export default function ProductsPage() {
                           </Button>
                           {categories.map((cat) => (
                             <Button
-                              key={cat.id}
+                              key={cat.slug}
                               variant={selectedCategory === cat.slug ? "default" : "ghost"}
                               className={`w-full justify-start text-sm rounded-lg transition-all ${
                                 selectedCategory === cat.slug
