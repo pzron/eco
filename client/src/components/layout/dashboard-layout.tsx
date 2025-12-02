@@ -2,26 +2,69 @@ import { cn } from "@/lib/utils";
 import { Link, useLocation } from "wouter";
 import { 
   LayoutDashboard, ShoppingBag, Users, Settings, 
-  BarChart3, Box, Wallet, Bell, Search, Menu 
+  BarChart3, Box, Wallet, Bell, Search, Menu,
+  Package, Receipt, ClipboardList, TrendingUp,
+  FileText, MessageSquare, UserCheck, Truck,
+  AlertCircle, Building2, ShieldCheck, Calendar,
+  CreditCard, Boxes, ArrowLeftRight, Headphones,
+  type LucideIcon
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuthStore, UserRole } from "@/stores/auth";
+
+interface NavItem {
+  icon: LucideIcon;
+  label: string;
+  href: string;
+}
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  role: "admin" | "vendor" | "affiliate";
+  role: UserRole;
 }
 
 export function DashboardLayout({ children, role }: DashboardLayoutProps) {
   const [location] = useLocation();
+  const { user } = useAuthStore();
 
-  const navItems = {
+  const navItems: Record<string, NavItem[]> = {
     admin: [
       { icon: LayoutDashboard, label: "Command Center", href: "/admin" },
       { icon: Users, label: "User Management", href: "/admin/users" },
+      { icon: ShieldCheck, label: "Role Management", href: "/admin/roles" },
       { icon: ShoppingBag, label: "Products", href: "/admin/products" },
       { icon: BarChart3, label: "Analytics", href: "/admin/analytics" },
-      { icon: Settings, label: "System Config", href: "/admin/settings" },
+      { icon: Building2, label: "Store Settings", href: "/admin/settings" },
+    ],
+    manager: [
+      { icon: LayoutDashboard, label: "Dashboard", href: "/manager" },
+      { icon: Users, label: "Team Management", href: "/manager/team" },
+      { icon: TrendingUp, label: "Sales Overview", href: "/manager/sales" },
+      { icon: Boxes, label: "Inventory Control", href: "/manager/inventory" },
+      { icon: BarChart3, label: "Reports", href: "/manager/reports" },
+      { icon: Calendar, label: "Schedules", href: "/manager/schedules" },
+    ],
+    cashier: [
+      { icon: LayoutDashboard, label: "Dashboard", href: "/cashier" },
+      { icon: CreditCard, label: "Point of Sale", href: "/cashier/pos" },
+      { icon: Receipt, label: "Transactions", href: "/cashier/transactions" },
+      { icon: ClipboardList, label: "Daily Summary", href: "/cashier/summary" },
+      { icon: Package, label: "Quick Orders", href: "/cashier/orders" },
+    ],
+    stockkeeper: [
+      { icon: LayoutDashboard, label: "Dashboard", href: "/stockkeeper" },
+      { icon: Boxes, label: "Inventory", href: "/stockkeeper/inventory" },
+      { icon: Truck, label: "Receiving", href: "/stockkeeper/receiving" },
+      { icon: ArrowLeftRight, label: "Transfers", href: "/stockkeeper/transfers" },
+      { icon: AlertCircle, label: "Stock Alerts", href: "/stockkeeper/alerts" },
+    ],
+    office_member: [
+      { icon: LayoutDashboard, label: "Dashboard", href: "/office" },
+      { icon: FileText, label: "Documents", href: "/office/documents" },
+      { icon: BarChart3, label: "Reports", href: "/office/reports" },
+      { icon: Headphones, label: "Customer Support", href: "/office/support" },
+      { icon: MessageSquare, label: "Communications", href: "/office/communications" },
     ],
     vendor: [
       { icon: LayoutDashboard, label: "Dashboard", href: "/vendor" },
@@ -34,14 +77,36 @@ export function DashboardLayout({ children, role }: DashboardLayoutProps) {
       { icon: BarChart3, label: "Campaigns", href: "/affiliate/campaigns" },
       { icon: Wallet, label: "Earnings", href: "/affiliate/earnings" },
       { icon: Settings, label: "Profile", href: "/affiliate/profile" },
-    ]
+    ],
+    customer: []
   };
 
-  const items = navItems[role];
+  const roleLabels: Record<string, string> = {
+    admin: "ADMIN",
+    manager: "MANAGER",
+    cashier: "CASHIER",
+    stockkeeper: "STOCK",
+    office_member: "OFFICE",
+    vendor: "VENDOR",
+    affiliate: "AFFILIATE",
+    customer: "CUSTOMER"
+  };
+
+  const roleColors: Record<string, string> = {
+    admin: "from-purple-500 to-pink-500",
+    manager: "from-blue-500 to-cyan-500",
+    cashier: "from-green-500 to-emerald-500",
+    stockkeeper: "from-orange-500 to-yellow-500",
+    office_member: "from-indigo-500 to-violet-500",
+    vendor: "from-rose-500 to-red-500",
+    affiliate: "from-teal-500 to-green-500",
+    customer: "from-gray-500 to-slate-500"
+  };
+
+  const items = navItems[role] || [];
 
   return (
     <div className="min-h-screen bg-[#050505] flex">
-      {/* Sidebar */}
       <aside className="w-64 border-r border-white/10 bg-black/40 backdrop-blur-xl fixed h-full hidden md:flex flex-col z-20">
         <div className="p-6 border-b border-white/10">
           <Link href="/">
@@ -52,12 +117,15 @@ export function DashboardLayout({ children, role }: DashboardLayoutProps) {
               </span>
             </div>
           </Link>
-          <div className="mt-2 px-2 py-1 rounded bg-white/5 text-xs text-muted-foreground uppercase tracking-wider font-medium w-fit">
-            {role.toUpperCase()} PORTAL
+          <div className={cn(
+            "mt-2 px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-wider w-fit",
+            `bg-gradient-to-r ${roleColors[role]} text-white`
+          )}>
+            {roleLabels[role]} PORTAL
           </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {items.map((item) => (
             <Link key={item.href} href={item.href}>
               <div className={cn(
@@ -79,23 +147,20 @@ export function DashboardLayout({ children, role }: DashboardLayoutProps) {
         <div className="p-4 border-t border-white/10">
           <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
             <Avatar className="h-10 w-10 border border-white/20">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>AD</AvatarFallback>
+              <AvatarImage src={user?.avatar ?? "https://api.dicebear.com/7.x/avataaars/svg?seed=default"} />
+              <AvatarFallback>{user?.name?.charAt(0) ?? "U"}</AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium text-white truncate">Admin User</div>
-              <div className="text-xs text-muted-foreground truncate">admin@nex.com</div>
+              <div className="text-sm font-medium text-white truncate">{user?.name ?? "Guest User"}</div>
+              <div className="text-xs text-muted-foreground truncate">{user?.email ?? "guest@nex.com"}</div>
             </div>
           </div>
         </div>
       </aside>
 
-      {/* Main Content */}
       <div className="flex-1 md:ml-64 flex flex-col min-h-screen relative overflow-hidden">
-        {/* Background Effects */}
         <div className="absolute top-0 left-0 w-full h-96 bg-primary/5 blur-[100px] pointer-events-none" />
         
-        {/* Header */}
         <header className="h-16 border-b border-white/10 bg-black/20 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-10">
           <div className="md:hidden">
             <Button variant="ghost" size="icon"><Menu className="w-5 h-5" /></Button>
@@ -106,7 +171,7 @@ export function DashboardLayout({ children, role }: DashboardLayoutProps) {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input 
                 type="text" 
-                placeholder="Ask AI Assistant..." 
+                placeholder="Search..." 
                 className="w-full bg-white/5 border border-white/10 rounded-full pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-primary/50 transition-colors"
               />
             </div>
@@ -118,9 +183,11 @@ export function DashboardLayout({ children, role }: DashboardLayoutProps) {
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 animate-ping" />
               <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500" />
             </Button>
-            <Button size="sm" className="bg-primary/20 text-primary border border-primary/20 hover:bg-primary/30">
-              <Wallet className="mr-2 w-4 h-4" /> Connect Wallet
-            </Button>
+            {role === 'admin' && (
+              <Button size="sm" className="bg-primary/20 text-primary border border-primary/20 hover:bg-primary/30">
+                <Wallet className="mr-2 w-4 h-4" /> Connect Wallet
+              </Button>
+            )}
           </div>
         </header>
 

@@ -21,6 +21,7 @@ import AdminUsers from "@/pages/admin/users";
 import AdminProducts from "@/pages/admin/products";
 import AdminAnalytics from "@/pages/admin/analytics";
 import AdminSettings from "@/pages/admin/settings";
+import AdminRoles from "@/pages/admin/roles";
 
 import AffiliateDashboard from "@/pages/affiliate/dashboard";
 import AffiliateCampaigns from "@/pages/affiliate/campaigns";
@@ -31,6 +32,31 @@ import VendorDashboard from "@/pages/vendor/dashboard";
 import VendorProducts from "@/pages/vendor/products";
 import VendorSales from "@/pages/vendor/sales";
 import VendorSettings from "@/pages/vendor/settings";
+
+import ManagerDashboard from "@/pages/manager/dashboard";
+import ManagerTeam from "@/pages/manager/team";
+import ManagerSales from "@/pages/manager/sales";
+import ManagerInventory from "@/pages/manager/inventory";
+import ManagerReports from "@/pages/manager/reports";
+import ManagerSchedules from "@/pages/manager/schedules";
+
+import CashierDashboard from "@/pages/cashier/dashboard";
+import CashierPOS from "@/pages/cashier/pos";
+import CashierTransactions from "@/pages/cashier/transactions";
+import CashierSummary from "@/pages/cashier/summary";
+import CashierOrders from "@/pages/cashier/orders";
+
+import StockkeeperDashboard from "@/pages/stockkeeper/dashboard";
+import StockkeeperInventory from "@/pages/stockkeeper/inventory";
+import StockkeeperReceiving from "@/pages/stockkeeper/receiving";
+import StockkeeperTransfers from "@/pages/stockkeeper/transfers";
+import StockkeeperAlerts from "@/pages/stockkeeper/alerts";
+
+import OfficeDashboard from "@/pages/office/dashboard";
+import OfficeDocuments from "@/pages/office/documents";
+import OfficeReports from "@/pages/office/reports";
+import OfficeSupport from "@/pages/office/support";
+import OfficeCommunications from "@/pages/office/communications";
 
 import NotFound from "@/pages/not-found";
 
@@ -52,6 +78,7 @@ function Router() {
       <Route path="/admin" component={AdminDashboard} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route path="/admin/users" component={AdminUsers} />
+      <Route path="/admin/roles" component={AdminRoles} />
       <Route path="/admin/products" component={AdminProducts} />
       <Route path="/admin/analytics" component={AdminAnalytics} />
       <Route path="/admin/settings" component={AdminSettings} />
@@ -67,6 +94,35 @@ function Router() {
       <Route path="/vendor/products" component={VendorProducts} />
       <Route path="/vendor/sales" component={VendorSales} />
       <Route path="/vendor/settings" component={VendorSettings} />
+
+      <Route path="/manager" component={ManagerDashboard} />
+      <Route path="/manager/dashboard" component={ManagerDashboard} />
+      <Route path="/manager/team" component={ManagerTeam} />
+      <Route path="/manager/sales" component={ManagerSales} />
+      <Route path="/manager/inventory" component={ManagerInventory} />
+      <Route path="/manager/reports" component={ManagerReports} />
+      <Route path="/manager/schedules" component={ManagerSchedules} />
+
+      <Route path="/cashier" component={CashierDashboard} />
+      <Route path="/cashier/dashboard" component={CashierDashboard} />
+      <Route path="/cashier/pos" component={CashierPOS} />
+      <Route path="/cashier/transactions" component={CashierTransactions} />
+      <Route path="/cashier/summary" component={CashierSummary} />
+      <Route path="/cashier/orders" component={CashierOrders} />
+
+      <Route path="/stockkeeper" component={StockkeeperDashboard} />
+      <Route path="/stockkeeper/dashboard" component={StockkeeperDashboard} />
+      <Route path="/stockkeeper/inventory" component={StockkeeperInventory} />
+      <Route path="/stockkeeper/receiving" component={StockkeeperReceiving} />
+      <Route path="/stockkeeper/transfers" component={StockkeeperTransfers} />
+      <Route path="/stockkeeper/alerts" component={StockkeeperAlerts} />
+
+      <Route path="/office" component={OfficeDashboard} />
+      <Route path="/office/dashboard" component={OfficeDashboard} />
+      <Route path="/office/documents" component={OfficeDocuments} />
+      <Route path="/office/reports" component={OfficeReports} />
+      <Route path="/office/support" component={OfficeSupport} />
+      <Route path="/office/communications" component={OfficeCommunications} />
 
       <Route component={NotFound} />
     </Switch>

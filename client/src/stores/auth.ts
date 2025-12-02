@@ -1,6 +1,156 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+export type UserRole = 'customer' | 'affiliate' | 'vendor' | 'admin' | 'manager' | 'cashier' | 'stockkeeper' | 'office_member';
+
+export interface RolePermissions {
+  canManageUsers: boolean;
+  canManageProducts: boolean;
+  canManageOrders: boolean;
+  canViewAnalytics: boolean;
+  canManageInventory: boolean;
+  canProcessPayments: boolean;
+  canManageReports: boolean;
+  canManageSettings: boolean;
+  canApproveRequests: boolean;
+  canManageTeam: boolean;
+  canAccessPOS: boolean;
+  canManageStock: boolean;
+  canManageDocuments: boolean;
+  canManageSupport: boolean;
+}
+
+export const ROLE_PERMISSIONS: Record<UserRole, RolePermissions> = {
+  admin: {
+    canManageUsers: true,
+    canManageProducts: true,
+    canManageOrders: true,
+    canViewAnalytics: true,
+    canManageInventory: true,
+    canProcessPayments: true,
+    canManageReports: true,
+    canManageSettings: true,
+    canApproveRequests: true,
+    canManageTeam: true,
+    canAccessPOS: true,
+    canManageStock: true,
+    canManageDocuments: true,
+    canManageSupport: true,
+  },
+  manager: {
+    canManageUsers: true,
+    canManageProducts: true,
+    canManageOrders: true,
+    canViewAnalytics: true,
+    canManageInventory: true,
+    canProcessPayments: false,
+    canManageReports: true,
+    canManageSettings: false,
+    canApproveRequests: true,
+    canManageTeam: true,
+    canAccessPOS: false,
+    canManageStock: true,
+    canManageDocuments: true,
+    canManageSupport: true,
+  },
+  cashier: {
+    canManageUsers: false,
+    canManageProducts: false,
+    canManageOrders: true,
+    canViewAnalytics: false,
+    canManageInventory: false,
+    canProcessPayments: true,
+    canManageReports: false,
+    canManageSettings: false,
+    canApproveRequests: false,
+    canManageTeam: false,
+    canAccessPOS: true,
+    canManageStock: false,
+    canManageDocuments: false,
+    canManageSupport: false,
+  },
+  stockkeeper: {
+    canManageUsers: false,
+    canManageProducts: true,
+    canManageOrders: false,
+    canViewAnalytics: false,
+    canManageInventory: true,
+    canProcessPayments: false,
+    canManageReports: false,
+    canManageSettings: false,
+    canApproveRequests: false,
+    canManageTeam: false,
+    canAccessPOS: false,
+    canManageStock: true,
+    canManageDocuments: false,
+    canManageSupport: false,
+  },
+  office_member: {
+    canManageUsers: false,
+    canManageProducts: false,
+    canManageOrders: true,
+    canViewAnalytics: true,
+    canManageInventory: false,
+    canProcessPayments: false,
+    canManageReports: true,
+    canManageSettings: false,
+    canApproveRequests: false,
+    canManageTeam: false,
+    canAccessPOS: false,
+    canManageStock: false,
+    canManageDocuments: true,
+    canManageSupport: true,
+  },
+  vendor: {
+    canManageUsers: false,
+    canManageProducts: true,
+    canManageOrders: true,
+    canViewAnalytics: true,
+    canManageInventory: true,
+    canProcessPayments: false,
+    canManageReports: true,
+    canManageSettings: true,
+    canApproveRequests: false,
+    canManageTeam: false,
+    canAccessPOS: false,
+    canManageStock: true,
+    canManageDocuments: false,
+    canManageSupport: false,
+  },
+  affiliate: {
+    canManageUsers: false,
+    canManageProducts: false,
+    canManageOrders: false,
+    canViewAnalytics: true,
+    canManageInventory: false,
+    canProcessPayments: false,
+    canManageReports: true,
+    canManageSettings: true,
+    canApproveRequests: false,
+    canManageTeam: false,
+    canAccessPOS: false,
+    canManageStock: false,
+    canManageDocuments: false,
+    canManageSupport: false,
+  },
+  customer: {
+    canManageUsers: false,
+    canManageProducts: false,
+    canManageOrders: false,
+    canViewAnalytics: false,
+    canManageInventory: false,
+    canProcessPayments: false,
+    canManageReports: false,
+    canManageSettings: false,
+    canApproveRequests: false,
+    canManageTeam: false,
+    canAccessPOS: false,
+    canManageStock: false,
+    canManageDocuments: false,
+    canManageSupport: false,
+  },
+};
+
 interface User {
   id: string;
   email: string;
@@ -8,7 +158,7 @@ interface User {
   avatar?: string;
   phone?: string;
   bio?: string;
-  role: 'customer' | 'affiliate' | 'vendor' | 'admin';
+  role: UserRole;
   address?: string;
   city?: string;
   country?: string;
@@ -19,6 +169,10 @@ interface User {
   affiliateApprovedAt?: string;
   authMethod?: 'email' | 'google' | 'web3';
   walletAddress?: string;
+  department?: string;
+  employeeId?: string;
+  shiftSchedule?: string;
+  hireDate?: string;
 }
 
 interface AuthStore {
@@ -32,27 +186,38 @@ interface AuthStore {
   updateUser: (data: Partial<User>) => void;
   submitAffiliateApplication: (formData: any) => void;
   approveAffiliateApplication: () => void;
-  // OTP Verification
   sendOTP: (email: string, method: 'email' | 'phone', phone?: string) => { success: boolean; otp: string };
   verifyOTP: (email: string, otp: string, password: string, name: string) => boolean;
   googleVerifyAndCreateAccount: (idToken: string) => { success: boolean; message: string };
   web3VerifyAndCreateAccount: (signature: string, message: string, walletAddress: string) => { success: boolean; message: string };
+  setRole: (role: UserRole) => void;
+  getPermissions: () => RolePermissions | null;
+  hasPermission: (permission: keyof RolePermissions) => boolean;
 }
 
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       isAuthenticated: false,
       login: (email: string, password: string) => {
+        let role: UserRole = 'customer';
+        if (email.includes('admin')) role = 'admin';
+        else if (email.includes('manager')) role = 'manager';
+        else if (email.includes('cashier')) role = 'cashier';
+        else if (email.includes('stock')) role = 'stockkeeper';
+        else if (email.includes('office')) role = 'office_member';
+        
         set({
           user: {
             id: Math.random().toString(36).substr(2, 9),
             email,
             name: email.split('@')[0],
             avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
-            role: 'customer',
+            role,
             authMethod: 'email',
+            employeeId: role !== 'customer' ? `EMP-${Math.random().toString(36).substr(2, 6).toUpperCase()}` : undefined,
+            department: role === 'manager' ? 'Management' : role === 'cashier' ? 'Sales' : role === 'stockkeeper' ? 'Warehouse' : role === 'office_member' ? 'Administration' : undefined,
           },
           isAuthenticated: true,
         });
@@ -129,22 +294,17 @@ export const useAuthStore = create<AuthStore>()(
           } : null,
         }));
       },
-      // OTP Verification Flow
       sendOTP: (email: string, method: 'email' | 'phone', phone?: string) => {
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        // In production: Send via SendGrid/Resend (email) or Twilio (SMS)
         console.log(`OTP sent to ${method === 'email' ? email : phone}: ${otp}`);
-        // Store OTP temporarily (in production: store in database with expiry)
         (window as any).__otpStore = { otp, email, timestamp: Date.now() };
         return { success: true, otp };
       },
       verifyOTP: (email: string, otp: string, password: string, name: string) => {
-        // Verify OTP
         const stored = (window as any).__otpStore;
         if (!stored || stored.otp !== otp || stored.email !== email) {
           return false;
         }
-        // OTP verified - create account
         set({
           user: {
             id: Math.random().toString(36).substr(2, 9),
@@ -158,41 +318,29 @@ export const useAuthStore = create<AuthStore>()(
         });
         return true;
       },
-      googleVerifyAndCreateAccount: (name: string, email: string, avatar: string, idToken: string) => {
-        // In production: Verify idToken with Google OAuth 2.0 API
-        // Token can be verified at: https://oauth2.googleapis.com/tokeninfo?id_token={idToken}
+      googleVerifyAndCreateAccount: (idToken: string) => {
         console.log('Google ID Token received for verification:', idToken.substring(0, 20) + '...');
-        set({
-          user: {
-            id: Math.random().toString(36).substr(2, 9),
-            email,
-            name,
-            avatar,
-            role: 'customer',
-            authMethod: 'google',
-          },
-          isAuthenticated: true,
-        });
         return { success: true, message: 'Google account verified and approved' };
       },
-      web3VerifyAndCreateAccount: (signature: string, message: string, walletAddress: string, name: string) => {
-        // In production: Verify signature using ethers.js
-        // Example: ethers.verifyMessage(message, signature) should return walletAddress
+      web3VerifyAndCreateAccount: (signature: string, message: string, walletAddress: string) => {
         console.log('Web3 Signature verification - Address:', walletAddress);
         console.log('Signed message:', message.substring(0, 50) + '...');
-        set({
-          user: {
-            id: Math.random().toString(36).substr(2, 9),
-            email: `${walletAddress}@web3.local`,
-            name,
-            avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${walletAddress}`,
-            role: 'customer',
-            authMethod: 'web3',
-            walletAddress,
-          },
-          isAuthenticated: true,
-        });
         return { success: true, message: 'Web3 wallet verified and approved' };
+      },
+      setRole: (role: UserRole) => {
+        set((state) => ({
+          user: state.user ? { ...state.user, role } : null,
+        }));
+      },
+      getPermissions: () => {
+        const { user } = get();
+        if (!user) return null;
+        return ROLE_PERMISSIONS[user.role];
+      },
+      hasPermission: (permission: keyof RolePermissions) => {
+        const { user } = get();
+        if (!user) return false;
+        return ROLE_PERMISSIONS[user.role][permission];
       },
     }),
     {
