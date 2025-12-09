@@ -14,7 +14,9 @@ import SignUpPage from "@/pages/signup";
 import ProfilePage from "@/pages/profile";
 import WishlistPage from "@/pages/wishlist";
 import DealsPage from "@/pages/deals";
-import ComparePage from "@/pages/compare";
+import ComboPage from "@/pages/combo";
+import ComboPage from "@/pages/combo";
+import ComboBuilderPage from "@/pages/combo-builder";
 
 import AdminDashboard from "@/pages/admin/dashboard";
 import AdminUsers from "@/pages/admin/users";
