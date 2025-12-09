@@ -398,9 +398,9 @@ function ComboCard({ combo, index }: ComboCardProps) {
 export default function ComboPage() {
   const stats = useMemo(() => ({
     totalCombos: combos.length,
-    avgSavings: Math.round(combos.reduce((sum, c) => sum + c.savingsPercent, 0) / combos.length),
-    maxSavings: Math.max(...combos.map(c => c.savingsPercent)),
-    totalProducts: combos.reduce((sum, c) => sum + c.products.length, 0),
+    avgSavings: Math.round(combos.reduce((sum: number, c: Combo) => sum + c.savingsPercent, 0) / combos.length),
+    maxSavings: Math.max(...combos.map((c: Combo) => c.savingsPercent)),
+    totalProducts: combos.reduce((sum: number, c: Combo) => sum + c.products.length, 0),
   }), []);
 
   return (
@@ -488,7 +488,7 @@ export default function ComboPage() {
               transition={{ delay: 0.5 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
             >
-              {combos.map((combo, index) => (
+              {combos.map((combo: Combo, index: number) => (
                 <ComboCard key={combo.id} combo={combo} index={index} />
               ))}
             </motion.div>

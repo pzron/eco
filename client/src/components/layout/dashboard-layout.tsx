@@ -78,6 +78,27 @@ export function DashboardLayout({ children, role }: DashboardLayoutProps) {
       { icon: Wallet, label: "Earnings", href: "/affiliate/earnings" },
       { icon: Settings, label: "Profile", href: "/affiliate/profile" },
     ],
+    hr: [
+      { icon: LayoutDashboard, label: "Dashboard", href: "/hr" },
+      { icon: Users, label: "Employees", href: "/hr/employees" },
+      { icon: Calendar, label: "Leave Requests", href: "/hr/leave" },
+      { icon: UserCheck, label: "Recruitment", href: "/hr/recruitment" },
+      { icon: FileText, label: "Payroll", href: "/hr/payroll" },
+    ],
+    marketing: [
+      { icon: LayoutDashboard, label: "Dashboard", href: "/marketing" },
+      { icon: TrendingUp, label: "Campaigns", href: "/marketing/campaigns" },
+      { icon: BarChart3, label: "Analytics", href: "/marketing/analytics" },
+      { icon: MessageSquare, label: "Social Media", href: "/marketing/social" },
+      { icon: FileText, label: "Content", href: "/marketing/content" },
+    ],
+    sales: [
+      { icon: LayoutDashboard, label: "Dashboard", href: "/sales" },
+      { icon: TrendingUp, label: "Pipeline", href: "/sales/pipeline" },
+      { icon: Users, label: "Leads", href: "/sales/leads" },
+      { icon: Receipt, label: "Deals", href: "/sales/deals" },
+      { icon: BarChart3, label: "Reports", href: "/sales/reports" },
+    ],
     customer: []
   };
 
@@ -89,7 +110,10 @@ export function DashboardLayout({ children, role }: DashboardLayoutProps) {
     office_member: "OFFICE",
     vendor: "VENDOR",
     affiliate: "AFFILIATE",
-    customer: "CUSTOMER"
+    customer: "CUSTOMER",
+    hr: "HR",
+    marketing: "MARKETING",
+    sales: "SALES"
   };
 
   const roleColors: Record<string, string> = {
@@ -100,7 +124,10 @@ export function DashboardLayout({ children, role }: DashboardLayoutProps) {
     office_member: "from-indigo-500 to-violet-500",
     vendor: "from-rose-500 to-red-500",
     affiliate: "from-teal-500 to-green-500",
-    customer: "from-gray-500 to-slate-500"
+    customer: "from-gray-500 to-slate-500",
+    hr: "from-blue-500 to-indigo-500",
+    marketing: "from-pink-500 to-rose-500",
+    sales: "from-green-500 to-teal-500"
   };
 
   const items = navItems[role] || [];

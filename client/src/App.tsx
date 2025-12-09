@@ -60,6 +60,11 @@ import OfficeReports from "@/pages/office/reports";
 import OfficeSupport from "@/pages/office/support";
 import OfficeCommunications from "@/pages/office/communications";
 
+import HRDashboard from "@/pages/hr/dashboard";
+import MarketingDashboard from "@/pages/marketing/dashboard";
+import SalesDashboard from "@/pages/sales/dashboard";
+import CustomerDashboard from "@/pages/dashboard";
+
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -125,6 +130,20 @@ function Router() {
       <Route path="/office/reports" component={OfficeReports} />
       <Route path="/office/support" component={OfficeSupport} />
       <Route path="/office/communications" component={OfficeCommunications} />
+
+      <Route path="/hr" component={HRDashboard} />
+      <Route path="/hr/dashboard" component={HRDashboard} />
+      
+      <Route path="/marketing" component={MarketingDashboard} />
+      <Route path="/marketing/dashboard" component={MarketingDashboard} />
+      
+      <Route path="/sales" component={SalesDashboard} />
+      <Route path="/sales/dashboard" component={SalesDashboard} />
+      
+      <Route path="/dashboard" component={CustomerDashboard} />
+      
+      <Route path="/combo" component={ComboPage} />
+      <Route path="/combo-builder" component={ComboBuilderPage} />
 
       <Route component={NotFound} />
     </Switch>
