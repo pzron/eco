@@ -61,8 +61,23 @@ import OfficeSupport from "@/pages/office/support";
 import OfficeCommunications from "@/pages/office/communications";
 
 import HRDashboard from "@/pages/hr/dashboard";
+import HREmployees from "@/pages/hr/employees";
+import HRLeave from "@/pages/hr/leave";
+import HRRecruitment from "@/pages/hr/recruitment";
+import HRPayroll from "@/pages/hr/payroll";
+
 import MarketingDashboard from "@/pages/marketing/dashboard";
+import MarketingCampaigns from "@/pages/marketing/campaigns";
+import MarketingAnalytics from "@/pages/marketing/analytics";
+import MarketingSocial from "@/pages/marketing/social";
+import MarketingContent from "@/pages/marketing/content";
+
 import SalesDashboard from "@/pages/sales/dashboard";
+import SalesPipeline from "@/pages/sales/pipeline";
+import SalesLeads from "@/pages/sales/leads";
+import SalesDeals from "@/pages/sales/deals";
+import SalesReports from "@/pages/sales/reports";
+
 import CustomerDashboard from "@/pages/dashboard";
 
 import NotFound from "@/pages/not-found";
@@ -133,12 +148,24 @@ function Router() {
 
       <Route path="/hr" component={HRDashboard} />
       <Route path="/hr/dashboard" component={HRDashboard} />
+      <Route path="/hr/employees" component={HREmployees} />
+      <Route path="/hr/leave" component={HRLeave} />
+      <Route path="/hr/recruitment" component={HRRecruitment} />
+      <Route path="/hr/payroll" component={HRPayroll} />
       
       <Route path="/marketing" component={MarketingDashboard} />
       <Route path="/marketing/dashboard" component={MarketingDashboard} />
+      <Route path="/marketing/campaigns" component={MarketingCampaigns} />
+      <Route path="/marketing/analytics" component={MarketingAnalytics} />
+      <Route path="/marketing/social" component={MarketingSocial} />
+      <Route path="/marketing/content" component={MarketingContent} />
       
       <Route path="/sales" component={SalesDashboard} />
       <Route path="/sales/dashboard" component={SalesDashboard} />
+      <Route path="/sales/pipeline" component={SalesPipeline} />
+      <Route path="/sales/leads" component={SalesLeads} />
+      <Route path="/sales/deals" component={SalesDeals} />
+      <Route path="/sales/reports" component={SalesReports} />
       
       <Route path="/dashboard" component={CustomerDashboard} />
       
