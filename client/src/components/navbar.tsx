@@ -119,7 +119,7 @@ export function Navbar() {
             { href: "/", label: "Home" },
             { href: "/products", label: "Products" },
             { href: "/deals", label: "Deals" },
-            { href: "/compare", label: "Compare" },
+            { href: "/combo", label: "Combo" },
           ].map(({ href, label }) => (
             <Link 
               key={href}
@@ -316,7 +316,7 @@ export function Navbar() {
                   { href: "/", label: "Home" },
                   { href: "/products", label: "Products" },
                   { href: "/deals", label: "Deals" },
-                  { href: "/compare", label: "Compare" },
+                  { href: "/combo", label: "combo" },
                   { href: "/wishlist", label: "Wishlist" },
                 ].map(({ href, label }) => (
                   <Link 
